@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Conectividade</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Conectividade - CurrículoFácil</h1>
+    
+    <div>
+        <button onclick="testBasicConnection()">Teste Básico</button>
+        <button onclick="testAPIConnection()">Teste API</button>
+        <button onclick="testFormSubmission()">Teste Formulário</button>
+        <button onclick="clearResults()">Limpar</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testBasicConnection() {
+            addResult('🔍 Testando conexão básica...', 'info');
+            
+            try {
+                const response = await fetch('/test');
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(`✅ Conexão básica OK: ${data.message}`, 'success');
+                } else {
+                    addResult(`❌ Erro na conexão básica: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Erro na conexão básica: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAPIConnection() {
+            addResult('🔍 Testando API POST...', 'info');
+            
+            try {
+                const response = await fetch('/api/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        test: 'dados de teste',
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(`✅ API POST OK: ${data.message}`, 'success');
+                } else {
+                    addResult(`❌ Erro na API POST: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Erro na API POST: ${error.message}`, 'error');
+            }
+        }
+
+        async function testFormSubmission() {
+            addResult('🔍 Testando submissão de formulário...', 'info');
+            
+            try {
+                const formData = new FormData();
+                formData.append('nome', 'Teste Silva');
+                formData.append('cargo', 'Desenvolvedor');
+                formData.append('email', 'teste@email.com');
+                formData.append('telefone', '(11) 99999-9999');
+                formData.append('cidade', 'São Paulo, SP');
+                formData.append('experiencia', 'Experiência de teste para verificar se o formulário está funcionando corretamente.');
+                formData.append('formacao', 'Graduação em Teste pela Universidade de Testes');
+                formData.append('habilidades', 'JavaScript, HTML, CSS, Testes');
+                formData.append('template', 'simples');
+
+                const response = await fetch('/api/generate-cv', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(`✅ Formulário OK: Currículo gerado com ID ${data.id}`, 'success');
+                } else {
+                    const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
+                    addResult(`❌ Erro no formulário: ${response.status} - ${errorData.error}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Erro no formulário: ${error.message}`, 'error');
+            }
+        }
+
+        // Teste automático ao carregar
+        window.addEventListener('load', () => {
+            addResult('🚀 Página carregada. Execute os testes acima.', 'info');
+        });
+    </script>
+</body>
+</html>

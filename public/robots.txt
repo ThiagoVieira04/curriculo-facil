@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /cv/
+
+Sitemap: https://gerador-curriculos.vercel.app/sitemap.xml

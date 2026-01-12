@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste dos Modelos - CurrículoFácil</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .models { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+        .model { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .model h2 { text-align: center; margin-bottom: 20px; color: #333; }
+        .cv-preview { border: 1px solid #ddd; background: white; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px 5px; }
+        button:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 40px;">📄 Teste dos Modelos de Currículo</h1>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button onclick="loadSampleData()">Carregar Dados de Exemplo</button>
+            <button onclick="window.open('index.html', '_blank')">← Voltar ao Site</button>
+        </div>
+
+        <div class="models">
+            <!-- Modelo Simples -->
+            <div class="model">
+                <h2>Modelo Simples</h2>
+                <div class="cv-preview" id="simples"></div>
+            </div>
+
+            <!-- Modelo Moderno -->
+            <div class="model">
+                <h2>Modelo Moderno</h2>
+                <div class="cv-preview" id="moderno"></div>
+            </div>
+
+            <!-- Modelo Executivo -->
+            <div class="model">
+                <h2>Modelo Executivo</h2>
+                <div class="cv-preview" id="executivo"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sampleData = {
+            nome: "Maria Silva Santos",
+            cargo: "Analista de Marketing Digital",
+            email: "maria.santos@email.com",
+            telefone: "(11) 99999-8888",
+            cidade: "São Paulo, SP",
+            experiencia: "Atuo há 3 anos na área de marketing digital, com experiência em gestão de campanhas no Google Ads e Facebook Ads. Responsável por aumentar o ROI das campanhas em 150% na empresa atual. Especialista em análise de métricas e otimização de conversões.",
+            formacao: "Graduação em Marketing pela Universidade Mackenzie (2019-2022). Curso de Especialização em Marketing Digital pela ESPM (2023). Certificações Google Ads e Facebook Blueprint.",
+            habilidades: "Google Ads, Facebook Ads, Google Analytics, SEO, Copywriting, Excel Avançado, Power BI, Photoshop, Canva, Gestão de Projetos, Análise de Dados",
+            photo: null
+        };
+
+        const templates = {
+            simples: (data) => `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; line-height: 1.6;">
+                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px;">
+                        <h1 style="margin: 0; color: #333; font-size: 28px;">${data.nome}</h1>
+                        <h2 style="margin: 5px 0; color: #666; font-size: 18px; font-weight: normal;">${data.cargo}</h2>
+                        <p style="margin: 10px 0; color: #666;">
+                            📧 ${data.email} | 📱 ${data.telefone} | 📍 ${data.cidade}
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">EXPERIÊNCIA PROFISSIONAL</h3>
+                        <p style="text-align: justify;">${data.experiencia}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">FORMAÇÃO ACADÊMICA</h3>
+                        <p style="text-align: justify;">${data.formacao}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">HABILIDADES</h3>
+                        <p style="text-align: justify;">${data.habilidades}</p>
+                    </div>
+                </div>
+            `,
+            
+            moderno: (data) => `
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div style="padding: 30px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 32px; font-weight: 300;">${data.nome}</h1>
+                        <h2 style="margin: 10px 0; font-size: 20px; font-weight: 400; opacity: 0.9;">${data.cargo}</h2>
+                        <div style="margin: 20px 0; font-size: 14px; opacity: 0.8;">
+                            <span style="margin: 0 10px;">📧 ${data.email}</span>
+                            <span style="margin: 0 10px;">📱 ${data.telefone}</span>
+                            <span style="margin: 0 10px;">📍 ${data.cidade}</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; color: #333; padding: 30px;">
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: #667eea; font-size: 18px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Experiência Profissional</h3>
+                            <p style="text-align: justify; line-height: 1.7;">${data.experiencia}</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: #667eea; font-size: 18px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Formação Acadêmica</h3>
+                            <p style="text-align: justify; line-height: 1.7;">${data.formacao}</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: #667eea; font-size: 18px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Habilidades</h3>
+                            <p style="text-align: justify; line-height: 1.7;">${data.habilidades}</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            
+            executivo: (data) => `
+                <div style="font-family: 'Times New Roman', serif; max-width: 600px; margin: 0 auto; padding: 40px; background: white; color: #333;">
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="margin: 0; font-size: 36px; font-weight: bold; color: #1a1a1a; letter-spacing: 2px;">${data.nome}</h1>
+                        <div style="width: 100px; height: 2px; background: #333; margin: 15px auto;"></div>
+                        <h2 style="margin: 15px 0; font-size: 22px; font-weight: normal; color: #666; font-style: italic;">${data.cargo}</h2>
+                        <div style="margin: 20px 0; font-size: 16px; color: #666;">
+                            <div>${data.email}</div>
+                            <div>${data.telefone}</div>
+                            <div>${data.cidade}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 35px;">
+                        <h3 style="color: #1a1a1a; font-size: 20px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #333; padding-bottom: 8px;">Experiência Profissional</h3>
+                        <p style="text-align: justify; line-height: 1.8; font-size: 16px;">${data.experiencia}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 35px;">
+                        <h3 style="color: #1a1a1a; font-size: 20px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #333; padding-bottom: 8px;">Formação Acadêmica</h3>
+                        <p style="text-align: justify; line-height: 1.8; font-size: 16px;">${data.formacao}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 35px;">
+                        <h3 style="color: #1a1a1a; font-size: 20px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #333; padding-bottom: 8px;">Competências</h3>
+                        <p style="text-align: justify; line-height: 1.8; font-size: 16px;">${data.habilidades}</p>
+                    </div>
+                </div>
+            `
+        };
+
+        function loadSampleData() {
+            document.getElementById('simples').innerHTML = templates.simples(sampleData);
+            document.getElementById('moderno').innerHTML = templates.moderno(sampleData);
+            document.getElementById('executivo').innerHTML = templates.executivo(sampleData);
+        }
+
+        // Carregar automaticamente ao abrir a página
+        window.onload = loadSampleData;
+    </script>
+</body>
+</html>

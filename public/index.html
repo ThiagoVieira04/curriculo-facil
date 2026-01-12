@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Currículo Grátis Online - Gerador de Currículos Profissionais</title>
+    <meta name="description"
+        content="Crie seu currículo profissional em 3 minutos. Grátis, sem cadastro, com IA para melhorar o texto. Download em PDF de alta qualidade.">
+    <meta name="keywords"
+        content="currículo grátis, criar currículo online, gerador de currículo, currículo profissional, CV grátis">
+    <link rel="canonical" href="https://gerador-curriculos.vercel.app">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXX"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <h1>📄 CurrículoFácil</h1>
+                <div class="nav-links">
+                    <a href="#modelos">Modelos</a>
+                    <a href="#como-funciona">Como Funciona</a>
+                    <a href="/sobre">Sobre</a>
+                    <a href="/contato">Contato</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Crie seu Currículo Profissional em 3 Minutos</h2>
+                    <p>100% Gratuito • Sem Cadastro • Com IA • Download PDF</p>
+                    <button class="cta-button" onclick="startCreation()">
+                        🚀 Criar Currículo Grátis
+                    </button>
+                    <div class="trust-indicators">
+                        <span>✅ Mais de 50.000 currículos criados</span>
+                        <span>✅ Aprovado por recrutadores</span>
+                        <span>✅ Compatível com ATS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Como Funciona -->
+        <section id="como-funciona" class="how-it-works">
+            <div class="container">
+                <h3>Como Funciona</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>Preencha seus dados</h4>
+                        <p>Nome, cargo, experiência e formação</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>IA melhora o texto</h4>
+                        <p>Linguagem profissional automática</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>Baixe em PDF</h4>
+                        <p>Alta qualidade, sem marca d'água</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modelos -->
+        <section id="modelos" class="templates">
+            <div class="container">
+                <h3>Modelos Profissionais</h3>
+                <div class="template-grid">
+                    <div class="template-card" onclick="showTemplatePreview('simples')">
+                        <div class="template-thumbnail"
+                            style="width:100%;height:300px;background:white;border:1px solid #ddd;padding:15px;font-family:Arial,sans-serif;font-size:10px;line-height:1.2;overflow:hidden;cursor:pointer;transition:transform 0.3s;">
+                            <div
+                                style="display:flex;align-items:center;gap:10px;margin-bottom:15px;border-bottom:1px solid #333;padding-bottom:10px;">
+                                <div
+                                    style="width:40px;height:40px;background:#eee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;">
+                                    👤</div>
+                                <div style="text-align:left;">
+                                    <div style="font-size:12px;font-weight:bold;color:#333;">MARIA SILVA SANTOS</div>
+                                    <div style="font-size:9px;color:#666;">Analista de Marketing Digital</div>
+                                    <div style="font-size:7px;color:#666;">📧 maria@email.com | 📱 (11) 99999-8888</div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom:8px;">
+                                <div
+                                    style="font-size:9px;font-weight:bold;color:#333;border-bottom:1px solid #ccc;padding-bottom:2px;">
+                                    EXPERIÊNCIA PROFISSIONAL</div>
+                                <div style="font-size:8px;margin-top:3px;">Atuo há 3 anos na área de marketing digital,
+                                    com experiência em gestão de campanhas...</div>
+                            </div>
+                            <div style="margin-bottom:8px;">
+                                <div
+                                    style="font-size:9px;font-weight:bold;color:#333;border-bottom:1px solid #ccc;padding-bottom:2px;">
+                                    FORMAÇÃO ACADÊMICA</div>
+                                <div style="font-size:8px;margin-top:3px;">Graduação em Marketing pela Universidade
+                                    Mackenzie (2019-2022)...</div>
+                            </div>
+                            <div>
+                                <div
+                                    style="font-size:9px;font-weight:bold;color:#333;border-bottom:1px solid #ccc;padding-bottom:2px;">
+                                    HABILIDADES</div>
+                                <div style="font-size:8px;margin-top:3px;">Google Ads, Facebook Ads, Google Analytics,
+                                    SEO, Copywriting...</div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Simples</h4>
+                            <p>Ideal para primeiro emprego</p>
+                            <button class="preview-btn"
+                                onclick="event.stopPropagation(); showTemplatePreview('simples')">🔍 Ver
+                                Ampliado</button>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplatePreview('moderno')">
+                        <div class="template-thumbnail"
+                            style="width:100%;height:300px;background:linear-gradient(135deg,#6b7280 0%,#4b5563 100%);color:white;overflow:hidden;cursor:pointer;transition:transform 0.3s;">
+                            <div
+                                style="padding:20px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.1);">
+                                <div
+                                    style="width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;">
+                                    👤</div>
+                                <div style="text-align:left;">
+                                    <div style="font-size:12px;font-weight:bold;">MARIA SILVA SANTOS</div>
+                                    <div style="font-size:9px;opacity:0.9;">Analista de Marketing Digital</div>
+                                    <div style="font-size:7px;opacity:0.8;">📧 maria@email.com | 📱 (11) 99999-8888
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="background:white;color:#333;padding:15px;font-size:8px;">
+                                <div style="margin-bottom:8px;">
+                                    <div
+                                        style="color:#6b7280;font-size:9px;font-weight:bold;text-transform:uppercase;margin-bottom:3px;">
+                                        Experiência Profissional</div>
+                                    <div>Atuo há 3 anos na área de marketing digital, com experiência em gestão de
+                                        campanhas...</div>
+                                </div>
+                                <div style="margin-bottom:8px;">
+                                    <div
+                                        style="color:#6b7280;font-size:9px;font-weight:bold;text-transform:uppercase;margin-bottom:3px;">
+                                        Formação Acadêmica</div>
+                                    <div>Graduação em Marketing pela Universidade Mackenzie...</div>
+                                </div>
+                                <div>
+                                    <div
+                                        style="color:#6b7280;font-size:9px;font-weight:bold;text-transform:uppercase;margin-bottom:3px;">
+                                        Habilidades</div>
+                                    <div>Google Ads, Facebook Ads, Google Analytics...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Moderno</h4>
+                            <p>Para profissionais experientes</p>
+                            <button class="preview-btn"
+                                onclick="event.stopPropagation(); showTemplatePreview('moderno')">🔍 Ver
+                                Ampliado</button>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplatePreview('executivo')">
+                        <div class="template-thumbnail"
+                            style="width:100%;height:300px;background:white;border:2px solid #333;padding:20px;font-family:'Times New Roman',serif;font-size:9px;overflow:hidden;cursor:pointer;transition:transform 0.3s;">
+                            <div
+                                style="display:flex;align-items:center;gap:15px;margin-bottom:15px;border-bottom:2px solid #333;padding-bottom:15px;">
+                                <div
+                                    style="width:40px;height:40px;background:#f5f5f5;border:1px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;">
+                                    👤</div>
+                                <div style="text-align:left;">
+                                    <div
+                                        style="font-size:14px;font-weight:bold;color:#1a1a1a;letter-spacing:0.5px;text-transform:uppercase;">
+                                        MARIA SILVA SANTOS</div>
+                                    <div style="font-size:10px;color:#666;font-style:italic;margin-top:2px;">Analista de
+                                        Marketing Digital</div>
+                                    <div style="font-size:7px;color:#666;margin-top:5px;">maria@email.com | SP</div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom:10px;">
+                                <div
+                                    style="color:#1a1a1a;font-size:10px;font-weight:bold;text-transform:uppercase;border-bottom:1px solid #333;padding-bottom:3px;margin-bottom:5px;">
+                                    Experiência Profissional</div>
+                                <div style="font-size:8px;line-height:1.3;">Atuo há 3 anos na área de marketing digital,
+                                    com experiência em gestão de campanhas no Google Ads...</div>
+                            </div>
+                            <div style="margin-bottom:10px;">
+                                <div
+                                    style="color:#1a1a1a;font-size:10px;font-weight:bold;text-transform:uppercase;border-bottom:1px solid #333;padding-bottom:3px;margin-bottom:5px;">
+                                    Formação Acadêmica</div>
+                                <div style="font-size:8px;line-height:1.3;">Graduação em Marketing pela Universidade
+                                    Mackenzie (2019-2022)...</div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Executivo</h4>
+                            <p>Para cargos de liderança</p>
+                            <button class="preview-btn"
+                                onclick="event.stopPropagation(); showTemplatePreview('executivo')">🔍 Ver
+                                Ampliado</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Preview -->
+                <div id="template-modal" class="modal"
+                    style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.8);">
+                    <div class="modal-content"
+                        style="background:white;margin:2% auto;padding:20px;width:90%;max-width:800px;border-radius:10px;position:relative;max-height:90vh;overflow-y:auto;">
+                        <span class="close" onclick="closeTemplatePreview()"
+                            style="position:absolute;top:15px;right:25px;font-size:30px;cursor:pointer;color:#666;">&times;</span>
+                        <div id="modal-template-content"></div>
+                        <div style="text-align:center;margin-top:20px;">
+                            <button onclick="closeTemplatePreview(); startCreation();" class="cta-button">Usar Este
+                                Modelo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AdSense - Banner Inferior (Movido do topo) -->
+        <div class="container">
+            <div class="ad-banner">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXX"
+                    data-ad-slot="XXXXXXXXX" data-ad-format="auto"></ins>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</p>
+            <div class="footer-links">
+                <a href="/sobre">Sobre</a>
+                <a href="/contato">Contato</a>
+                <a href="/privacidade">Privacidade</a>
+                <a href="/termos">Termos</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</body>
+
+</html>
