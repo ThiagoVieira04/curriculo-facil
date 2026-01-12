@@ -21,9 +21,11 @@
         gtag('config', 'GA_MEASUREMENT_ID');
     </script>
 
-    <!-- Google AdSense -->
+    <!-- Google AdSense (Comentado até ter ID válido para evitar erro 400) -->
+    <!-- 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXX"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> 
+    -->
 </head>
 
 <body>
@@ -242,8 +244,13 @@
         <!-- AdSense - Banner Inferior (Movido do topo) -->
         <div class="container">
             <div class="ad-banner">
+                <!-- AdSense Placeholder (Ativar quando tiver ID real)
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXX"
                     data-ad-slot="XXXXXXXXX" data-ad-format="auto"></ins>
+                -->
+                <div style="padding: 20px; background: #f1f1f1; color: #666; font-size: 12px; border: 1px dashed #ccc;">
+                    Espaço para Publicidade (Configure no index.html)
+                </div>
             </div>
         </div>
     </main>
@@ -262,7 +269,7 @@
 
     <script src="js/main.js"></script>
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        // (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 </body>
 
