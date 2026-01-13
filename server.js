@@ -791,14 +791,15 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
             };
 
             if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-                const chromium = require('@sparticuz/chromium');
+                const chromium = require('@sparticuz/chromium-min');
                 const puppeteerCore = require('puppeteer-core');
 
                 browser = await puppeteerCore.launch({
-                    args: [...chromium.args, ...launchOptions.args],
+                    args: chromium.args,
                     defaultViewport: chromium.defaultViewport,
                     executablePath: await chromium.executablePath(),
                     headless: chromium.headless,
+                    ignoreHTTPSErrors: true
                 });
             } else {
                 browser = await puppeteer.launch(launchOptions);
