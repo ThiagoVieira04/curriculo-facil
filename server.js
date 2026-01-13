@@ -60,6 +60,18 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 app.set('trust proxy', true);
 
+// Rota de diagnóstico leve (sem dependências pesadas)
+app.get('/api/debug-env', (req, res) => {
+    res.json({
+        status: 'online',
+        node_env: process.env.NODE_ENV,
+        vercel: process.env.VERCEL || 'false',
+        node_version: process.version,
+        memory: process.memoryUsage(),
+        uptime: process.uptime()
+    });
+});
+
 // Middleware para logs de requisições
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
@@ -554,12 +566,13 @@ const templates = {
 // Gerar currículo (Robustecido)
 app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
     const requestId = Date.now().toString(36);
-    console.log(`[${requestId}] Iniciando geração de currículo`);
+    console.log(`[${requestId}] 🚀 Iniciando geração de currículo (v2)`);
+    console.log(`[${requestId}] Memória antes: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`);
 
     try {
-        // 1. Validação de Entrada
+        // 0. Fail-fast para payload vazio
         if (!req.body) {
-            throw new Error('Nenhum dado recebido');
+            throw new Error('Payload vazio ou corrompido');
         }
 
         const {
