@@ -333,76 +333,107 @@ const templates = {
     `,
 
     executivo: (data) => `
-        <div style="font-family: 'Times New Roman', serif; max-width: 750px; margin: 0 auto; padding: 40px; line-height: 1.6; background: white; color: #333;">
-            <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 30px; border-bottom: 3px double #333; padding-bottom: 30px;">
-                ${data.photo ? `<img src="${data.photo}" style="width: 120px; height: 120px; border-radius: 4px; object-fit: cover; border: 1px solid #333;">` : ''}
-                <div style="text-align: left;">
-                    <h1 style="margin: 0; color: #333; font-size: ${calculateNameFontSize(data.nome)}; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${data.nome}</h1>
-                    <h2 style="margin: 10px 0; color: #555; font-size: 20px; font-weight: normal; font-style: italic;">${data.cargo}</h2>
-                    <p style="margin: 10px 0; color: #555; font-size: 14px;">
-                        📧 ${data.email} | 📱 ${data.telefone} | 📍 ${data.cidade}
-                    </p>
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 800px; margin: 0 auto; background: white; display: flex; box-shadow: 0 0 10px rgba(0,0,0,0.1); min-height: 1000px;">
+            <!-- Coluna Lateral (Esquerda) -->
+            <div style="width: 30%; background-color: #2c3e50; color: white; padding: 30px 20px; text-align: center;">
+                ${data.photo ? `<div style="width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; border: 4px solid #34495e; overflow: hidden;"><img src="${data.photo}" style="width: 100%; height: 100%; object-fit: cover;"></div>` : ''}
+                
+                <div style="text-align: left; margin-top: 30px;">
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #ecf0f1; border-bottom: 1px solid #7f8c8d; padding-bottom: 10px; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Contato</h3>
+                        <p style="font-size: 13px; margin: 5px 0; color: #bdc3c7;">📞 ${data.telefone}</p>
+                        <p style="font-size: 13px; margin: 5px 0; color: #bdc3c7; word-break: break-all;">📧 ${data.email}</p>
+                        <p style="font-size: 13px; margin: 5px 0; color: #bdc3c7;">📍 ${data.cidade}</p>
+                    </div>
+
                     ${data.nascimento || data.estadoCivil || data.naturalidade || data.nacionalidade ? `
-                        <p style="margin: 5px 0; color: #555; font-size: 12px;">
-                            ${data.nascimento ? `${data.nascimento}` : ''}
-                            ${data.estadoCivil ? ` | ${data.estadoCivil}` : ''}
-                            ${data.naturalidade ? ` | ${data.naturalidade}` : ''}
-                            ${data.nacionalidade ? ` | ${data.nacionalidade}` : ''}
-                        </p>
+                        <div style="margin-bottom: 30px;">
+                             <h3 style="color: #ecf0f1; border-bottom: 1px solid #7f8c8d; padding-bottom: 10px; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Pessoal</h3>
+                             <p style="font-size: 13px; margin: 5px 0; color: #bdc3c7;">${data.nascimento ? `${data.nascimento}<br>` : ''}
+                             ${data.estadoCivil ? `${data.estadoCivil}<br>` : ''}
+                             ${data.naturalidade ? `${data.naturalidade}<br>` : ''}
+                             ${data.nacionalidade ? `${data.nacionalidade}` : ''}</p>
+                        </div>
+                    ` : ''}
+
+                    ${data.habilidades ? `
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: #ecf0f1; border-bottom: 1px solid #7f8c8d; padding-bottom: 10px; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Habilidades</h3>
+                            <p style="font-size: 13px; color: #bdc3c7; line-height: 1.6;">${data.habilidades}</p>
+                        </div>
                     ` : ''}
                 </div>
             </div>
-            
-            ${data.objetivo ? `
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #333; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">OBJETIVO</h3>
-                    <p style="text-align: justify;">${data.objetivo}</p>
+
+            <!-- Coluna Principal (Direita) -->
+            <div style="width: 70%; padding: 40px;">
+                <div style="margin-bottom: 40px; border-bottom: 2px solid #2c3e50; padding-bottom: 20px;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 36px; text-transform: uppercase; letter-spacing: 2px; line-height: 1.2;">${data.nome}</h1>
+                    <h2 style="margin: 10px 0 0; color: #7f8c8d; font-size: 18px; font-weight: 300; letter-spacing: 1px;">${data.cargo}</h2>
                 </div>
-            ` : ''}
-            
-            <div style="margin-bottom: 25px;">
-                <h3 style="color: #333; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">EXPERIÊNCIA PROFISSIONAL</h3>
-                ${data.empresa1 ? `
-                    <div style="margin-bottom: 15px;">
-                        <strong>${data.empresa1}</strong> - ${data.funcao1}<br>
-                        <em>${data.periodo1}</em>
+
+                ${data.objetivo ? `
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #2c3e50; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #2c3e50; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px;">★</span>
+                            Objetivo
+                        </h3>
+                        <p style="color: #34495e; font-size: 14px; line-height: 1.6; text-align: justify;">${data.objetivo}</p>
                     </div>
                 ` : ''}
-                ${data.empresa2 ? `
-                    <div style="margin-bottom: 15px;">
-                        <strong>${data.empresa2}</strong> - ${data.funcao2}<br>
-                        <em>${data.periodo2}</em>
-                    </div>
-                ` : ''}
-                ${data.empresa3 ? `
-                    <div style="margin-bottom: 15px;">
-                        <strong>${data.empresa3}</strong> - ${data.funcao3}<br>
-                        <em>${data.periodo3}</em>
-                    </div>
-                ` : ''}
-                <p style="text-align: justify;">${data.experiencia}</p>
-            </div>
-            
-            <div style="margin-bottom: 25px;">
-                <h3 style="color: #333; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">ESCOLARIDADE</h3>
-                <p style="text-align: justify;">${data.formacao}</p>
-            </div>
-            
-            ${data.cursos ? `
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #333; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">CURSOS E CERTIFICAÇÕES</h3>
-                    <p style="text-align: justify;">${data.cursos}</p>
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2c3e50; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #2c3e50; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px;">💼</span>
+                        Experiência
+                    </h3>
+                    ${data.empresa1 ? `
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: #2c3e50; font-size: 15px;">${data.empresa1}</strong>
+                                <span style="color: #7f8c8d; font-size: 12px; font-style: italic;">${data.periodo1}</span>
+                            </div>
+                            <div style="color: #34495e; font-size: 14px; margin-bottom: 5px;">${data.funcao1}</div>
+                        </div>
+                    ` : ''}
+                    ${data.empresa2 ? `
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: #2c3e50; font-size: 15px;">${data.empresa2}</strong>
+                                <span style="color: #7f8c8d; font-size: 12px; font-style: italic;">${data.periodo2}</span>
+                            </div>
+                            <div style="color: #34495e; font-size: 14px; margin-bottom: 5px;">${data.funcao2}</div>
+                        </div>
+                    ` : ''}
+                    ${data.empresa3 ? `
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: #2c3e50; font-size: 15px;">${data.empresa3}</strong>
+                                <span style="color: #7f8c8d; font-size: 12px; font-style: italic;">${data.periodo3}</span>
+                            </div>
+                            <div style="color: #34495e; font-size: 14px; margin-bottom: 5px;">${data.funcao3}</div>
+                        </div>
+                    ` : ''}
+                    <p style="color: #34495e; font-size: 14px; line-height: 1.6; text-align: justify; margin-top: 10px;">${data.experiencia}</p>
                 </div>
-            ` : ''}
-            
-            <div style="margin-bottom: 25px;">
-                <h3 style="color: #333; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">HABILIDADES</h3>
-                <p style="text-align: justify;">${data.habilidades}</p>
-            </div>
-            
-            <!-- Rodapé com nome -->
-            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px; text-align: right; font-style: italic; color: #888; font-size: 12px;">
-                ${data.nome}
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2c3e50; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #2c3e50; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px;">🎓</span>
+                        Formação
+                    </h3>
+                    <p style="color: #34495e; font-size: 14px; line-height: 1.6;">${data.formacao}</p>
+                </div>
+
+                ${data.cursos ? `
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #2c3e50; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #2c3e50; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px;">📜</span>
+                            Cursos
+                        </h3>
+                        <p style="color: #34495e; font-size: 14px; line-height: 1.6;">${data.cursos}</p>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `,

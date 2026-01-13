@@ -713,36 +713,48 @@ function showTemplatePreview(templateType) {
         `,
 
         executivo: (data) => `
-            <div style="font-family: 'Times New Roman', serif; width: 100%; max-width: 750px; margin: 0 auto; padding: 20px; line-height: 1.6; border: 1px solid #ddd; background: white; color: #333; box-sizing: border-box; overflow-x: hidden;">
-                <div style="display: flex; align-items: center; gap: 25px; margin-bottom: 25px; border-bottom: 3px double #333; padding-bottom: 20px; flex-wrap: wrap;">
-                    <div style="width: 80px; height: 80px; background: #f5f5f5; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-size: 30px;">👤</div>
-                    <div style="text-align: left; flex: 1;">
-                        <h1 style="margin: 0; color: #333; font-size: 32px; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">MARIA SILVA SANTOS</h1>
-                        <h2 style="margin: 5px 0; color: #555; font-size: 16px; font-weight: normal; font-style: italic;">Analista de Marketing Digital</h2>
-                        <p style="margin: 5px 0; color: #555; font-size: 12px;">
-                            📧 maria.santos@email.com | 📱 (11) 99999-8888 | 📍 São Paulo, SP
-                        </p>
+            <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; width: 100%; max-width: 750px; margin: 0 auto; background: white; display: flex; box-shadow: 0 0 10px rgba(0,0,0,0.1); border: 1px solid #ddd; min-height: 800px;">
+                <!-- Coluna Lateral (Esquerda) -->
+                <div style="width: 30%; background-color: #2c3e50; color: white; padding: 20px 15px; text-align: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; border: 3px solid #34495e; background: #ecf0f1; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #2c3e50;">👤</div>
+                    
+                    <div style="text-align: left; margin-top: 20px;">
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #ecf0f1; border-bottom: 1px solid #7f8c8d; padding-bottom: 5px; margin-bottom: 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Contato</h3>
+                            <p style="font-size: 10px; margin: 3px 0; color: #bdc3c7;">📧 maria.santos@email.com</p>
+                            <p style="font-size: 10px; margin: 3px 0; color: #bdc3c7;">📱 (11) 99999-8888</p>
+                            <p style="font-size: 10px; margin: 3px 0; color: #bdc3c7;">📍 São Paulo, SP</p>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #ecf0f1; border-bottom: 1px solid #7f8c8d; padding-bottom: 5px; margin-bottom: 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Habilidades</h3>
+                            <p style="font-size: 10px; color: #bdc3c7; line-height: 1.4;">Google Ads, Facebook Ads, Analytics, SEO, Copywriting.</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <h3 style="color: #333; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">EXPERIÊNCIA PROFISSIONAL</h3>
-                    <p style="font-size: 12px; text-align: justify; line-height: 1.6;">Atuo há 3 anos na área de marketing digital, com experiência em gestão de campanhas...</p>
-                </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <h3 style="color: #333; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">FORMAÇÃO ACADÊMICA</h3>
-                    <p style="font-size: 12px; text-align: justify;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
-                </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <h3 style="color: #333; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase;">HABILIDADES</h3>
-                    <p style="font-size: 12px; text-align: justify;">Google Ads, Facebook Ads, Analytics, SEO, Copywriting.</p>
-                </div>
 
-                <!-- Rodapé com nome -->
-                <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; text-align: right; font-style: italic; color: #666; font-size: 10px;">
-                    MARIA SILVA SANTOS
+                <!-- Coluna Principal (Direita) -->
+                <div style="width: 70%; padding: 25px;">
+                    <div style="margin-bottom: 25px; border-bottom: 2px solid #2c3e50; padding-bottom: 15px;">
+                        <h1 style="margin: 0; color: #2c3e50; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">MARIA SILVA SANTOS</h1>
+                        <h2 style="margin: 5px 0 0; color: #7f8c8d; font-size: 14px; font-weight: 300;">Analista de Marketing Digital</h2>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
+                            <span style="background: #2c3e50; color: white; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; font-size: 9px;">💼</span>
+                            Experiência
+                        </h3>
+                        <p style="color: #34495e; font-size: 10px; text-align: justify; line-height: 1.4;">Atuo há 3 anos na área de marketing digital, com experiência em gestão de campanhas...</p>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
+                            <span style="background: #2c3e50; color: white; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; font-size: 9px;">🎓</span>
+                            Formação
+                        </h3>
+                        <p style="color: #34495e; font-size: 10px; text-align: justify;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
+                    </div>
                 </div>
             </div>
         `,
