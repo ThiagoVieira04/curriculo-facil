@@ -1,7 +1,15 @@
 const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp');
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer'); // Removido para evitar crash no Vercel (Cold Start)
+let puppeteer;
+try {
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+        puppeteer = require('puppeteer');
+    }
+} catch (e) {
+    console.warn('Puppeteer dev dependency not found (safe in production)');
+}
 const path = require('path');
 const fs = require('fs').promises;
 const cors = require('cors');
