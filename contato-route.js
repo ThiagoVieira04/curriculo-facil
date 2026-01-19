@@ -81,7 +81,7 @@ router.get('/', (req, res) => {
                             <p>Claro! O currículo gerado é seu e você pode usar da forma que desejar para buscar oportunidades de trabalho.</p>
                         </div>
                         
-                        <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                        <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                         
                         <p><a href="/">← Voltar ao início</a></p>
                     </div>

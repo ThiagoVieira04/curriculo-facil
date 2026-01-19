@@ -74,7 +74,7 @@ router.get('/', (req, res) => {
                         <a href="/" style="background: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 15px;">Criar Meu Currículo</a>
                     </div>
                     
-                    <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                    <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                     
                     <p><a href="/">← Voltar ao início</a></p>
                 </div>

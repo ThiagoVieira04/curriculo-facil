@@ -52,7 +52,7 @@ router.get('/', (req, res) => {
                     <h2>Contato</h2>
                     <p>Tem alguma dúvida ou sugestão? Entre em contato conosco através da nossa <a href="/contato">página de contato</a>.</p>
                     
-                    <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                    <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                     
                     <p><a href="/">← Voltar ao início</a></p>
                 </div>

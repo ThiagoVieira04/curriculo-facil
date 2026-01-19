@@ -1251,7 +1251,7 @@ app.get('/sobre', (req, res) => {
                     </div>
                     
                     <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b;">
-                        <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                        <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                         <a href="/" class="back-link">← Voltar ao início</a>
                     </div>
                 </div>
@@ -1324,7 +1324,7 @@ app.get('/contato', (req, res) => {
                             <p>Claro! O currículo gerado é seu e você pode usar da forma que desejar para buscar oportunidades de trabalho.</p>
                         </div>
                         
-                        <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                        <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                         
                         <p><a href="/">← Voltar ao início</a></p>
                     </div>
@@ -1386,7 +1386,7 @@ app.get('/privacidade', (req, res) => {
                 <h2>Contato</h2>
                 <p>Para questões sobre privacidade, entre em contato: <strong>tsmv04@hotmail.com</strong></p>
                 
-                <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                 
                 <p><a href="/">← Voltar ao início</a></p>
             </div>
@@ -1422,7 +1422,7 @@ app.get('/termos', (req, res) => {
                 <h2>Limitações</h2>
                 <p>O serviço é fornecido "como está", sem garantias de disponibilidade contínua.</p>
                 
-                <p><strong>&copy; 2025 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
+                <p><strong>&copy; 2026 CurrículoFácil - Todos os direitos reservados à Papel e Sonhos Informática</strong></p>
                 
                 <p><a href="/">← Voltar ao início</a></p>
             </div>
