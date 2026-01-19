@@ -813,10 +813,13 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
             console.log('[PDF] Iniciando browser com opções:', JSON.stringify(launchOptions));
 
             // Carregamento dinâmico do Puppeteer baseado no ambiente
-            if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-                // Ambiente de produção (Vercel)
-                console.log('[PDF] Inicializando Puppeteer para produção/Vercel');
-                const chromium = require('@sparticuz/chromium-min');
+            const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
+            const isLinux = process.platform === 'linux';
+
+            if (isVercel && isLinux) {
+                // Ambiente de produção (Vercel/Linux)
+                console.log('[PDF] Inicializando Puppeteer para produção/Vercel (Linux)');
+                const chromium = require('@sparticuz/chromium');
                 const puppeteerCore = require('puppeteer-core');
 
                 browser = await puppeteerCore.launch({

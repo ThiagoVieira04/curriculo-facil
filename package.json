@@ -13,7 +13,7 @@
     "test-server": "node test-server.js"
   },
   "dependencies": {
-    "@sparticuz/chromium-min": "^119.0.2",
+    "@sparticuz/chromium": "^143.0.4",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
