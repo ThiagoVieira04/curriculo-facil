@@ -529,7 +529,8 @@ async function downloadPDF(cvId, retryCount = 0) {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
-            throw new Error(errorData.error || `Erro ${response.status}`);
+            const detailMsg = errorData.details ? ` (${errorData.details})` : '';
+            throw new Error((errorData.error || `Erro ${response.status}`) + detailMsg);
         }
 
         const blob = await response.blob();

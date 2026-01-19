@@ -833,18 +833,19 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
                 try {
                     // Tenta carregar puppeteer da pasta node_modules
                     puppeteer = require('puppeteer');
+                    console.log('[PDF] Módulo puppeteer carregado com sucesso');
                 } catch (reqError) {
-                    console.error('[PDF] Erro ao carregar puppeteer:', reqError.message);
-                    throw new Error('Puppeteer não está instalado. Execute: npm install puppeteer');
+                    console.error('[PDF] Erro ao carregar módulo puppeteer:', reqError.message);
+                    throw new Error('Módulo puppeteer não encontrado no servidor. Tente executar "npm install"');
                 }
 
                 if (!puppeteer || typeof puppeteer.launch !== 'function') {
-                    throw new Error('Puppeteer carregado mas método launch não está disponível');
+                    throw new Error('Método launch do Puppeteer não está disponível');
                 }
 
-                console.log('[PDF] Puppeteer carregado com sucesso, iniciando launch...');
+                console.log('[PDF] Iniciando launch do browser...');
                 browser = await puppeteer.launch(launchOptions);
-                console.log('[PDF] Puppeteer launch finalizado');
+                console.log('[PDF] Browser launch concluído com sucesso');
             }
 
             if (!browser) {
@@ -854,12 +855,23 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
             console.log('[PDF] Browser iniciado com sucesso');
         } catch (launchError) {
             console.error('[PDF] Erro ao iniciar browser:', launchError);
+
+            // Log detalhado em arquivo para debug
+            try {
+                const fs = require('fs');
+                const logMessage = `[${new Date().toISOString()}] Erro ao iniciar browser: ${launchError.stack || launchError}\n`;
+                fs.appendFileSync('pdf-error.log', logMessage);
+            } catch (fsError) {
+                console.error('Erro ao gravar log de PDF:', fsError);
+            }
+
             return res.status(500).json({
                 error: 'Erro técnico ao iniciar gerador de PDF',
                 details: launchError.message || launchError.toString(),
+                stack: process.env.NODE_ENV === 'development' ? launchError.stack : undefined,
                 tip: launchError.message.includes('npm install')
                     ? 'Execute "npm install puppeteer" no servidor'
-                    : 'Tente novamente. Se o problema persistir, entre em contato com o suporte.'
+                    : 'Verifique se o Chrome/Chromium está instalado corretamente e se o antivírus não está bloqueando o Puppeteer.'
             });
         }
 
