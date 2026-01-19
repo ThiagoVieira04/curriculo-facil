@@ -224,7 +224,7 @@ const templates = {
             </div>
             
             <div style="margin-bottom: 25px;">
-                <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">ESCOLARIDADE</h3>
+                <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">FORMAÇÃO</h3>
                 <p style="text-align: justify;">${data.formacao}</p>
             </div>
             
@@ -305,7 +305,7 @@ const templates = {
                 </div>
                 
                 <div style="margin-bottom: 25px;">
-                    <h3 style="color: #6b7280; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #6b7280; padding-bottom: 5px;">ESCOLARIDADE</h3>
+                    <h3 style="color: #6b7280; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #6b7280; padding-bottom: 5px;">FORMAÇÃO</h3>
                     <p style="text-align: justify;">${data.formacao}</p>
                 </div>
                 
@@ -498,7 +498,7 @@ const templates = {
                 </div>
                 
                 <div style="margin-bottom: 25px;">
-                    <h3 style="color: #0f172a; border-left: 5px solid #38bdf8; padding-left: 10px; font-size: 18px; text-transform: uppercase;">ESCOLARIDADE</h3>
+                    <h3 style="color: #0f172a; border-left: 5px solid #38bdf8; padding-left: 10px; font-size: 18px; text-transform: uppercase;">FORMAÇÃO</h3>
                     <p style="text-align: justify;">${data.formacao}</p>
                 </div>
                 
@@ -579,7 +579,7 @@ const templates = {
             </div>
             
             <div style="margin-bottom: 25px;">
-                <h3 style="color: #2c3e50; font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px; text-transform: uppercase; font-style: italic; letter-spacing: 1px;">ESCOLARIDADE</h3>
+                <h3 style="color: #2c3e50; font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px; text-transform: uppercase; font-style: italic; letter-spacing: 1px;">FORMAÇÃO</h3>
                 <p style="text-align: justify;">${data.formacao}</p>
             </div>
             

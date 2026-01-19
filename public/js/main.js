@@ -193,9 +193,9 @@ function showFormPage() {
                             <textarea id="experiencia" name="experiencia" required placeholder="Descreva suas principais atividades e conquistas..."></textarea>
                         </div>
 
-                        <!-- Escolaridade -->
+                        <!-- Formação -->
                         <div class="form-group">
-                            <label for="formacao">Escolaridade *</label>
+                            <label for="formacao">Formação *</label>
                             <textarea id="formacao" name="formacao" required placeholder="Sua formação acadêmica..."></textarea>
                         </div>
 
@@ -663,7 +663,7 @@ function showTemplatePreview(templateType) {
                 </div>
                 
                 <div style="margin-bottom: 15px;">
-                    <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 3px; font-size: 14px;">FORMAÇÃO ACADÊMICA</h3>
+                    <h3 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 3px; font-size: 14px;">FORMAÇÃO</h3>
                     <p style="font-size: 12px;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
                 </div>
                 
@@ -704,7 +704,7 @@ function showTemplatePreview(templateType) {
                     </div>
                     
                     <div style="margin-bottom: 15px;">
-                        <h3 style="color: #6b7280; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #6b7280; padding-bottom: 5px;">FORMAÇÃO ACADÊMICA</h3>
+                        <h3 style="color: #6b7280; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #6b7280; padding-bottom: 5px;">FORMAÇÃO</h3>
                         <p style="font-size: 12px;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
                     </div>
                     
@@ -798,7 +798,7 @@ function showTemplatePreview(templateType) {
                     </div>
                     
                     <div style="margin-bottom: 15px;">
-                        <h3 style="color: #0f172a; border-left: 5px solid #38bdf8; padding-left: 10px; font-size: 14px; text-transform: uppercase;">FORMAÇÃO ACADÊMICA</h3>
+                        <h3 style="color: #0f172a; border-left: 5px solid #38bdf8; padding-left: 10px; font-size: 14px; text-transform: uppercase;">FORMAÇÃO</h3>
                         <p style="font-size: 12px; color: #334155; text-align: justify;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
                     </div>
                     
@@ -839,7 +839,7 @@ function showTemplatePreview(templateType) {
                 </div>
                 
                 <div style="margin-bottom: 15px;">
-                    <h3 style="color: #2c3e50; font-size: 13px; border-bottom: 1px solid #ccc; padding-bottom: 5px; text-transform: uppercase; font-style: italic; letter-spacing: 1px;">FORMAÇÃO ACADÊMICA</h3>
+                    <h3 style="color: #2c3e50; font-size: 13px; border-bottom: 1px solid #ccc; padding-bottom: 5px; text-transform: uppercase; font-style: italic; letter-spacing: 1px;">FORMAÇÃO</h3>
                     <p style="font-size: 12px; line-height: 1.6; text-align: justify;">Graduação em Marketing pela Universidade Mackenzie (2019-2022).</p>
                 </div>
                 
@@ -895,7 +895,7 @@ function validateFormData(formData) {
         telefone: 'Telefone',
         cidade: 'Cidade',
         experiencia: 'Experiência profissional',
-        formacao: 'Escolaridade',
+        formacao: 'Formação',
         habilidades: 'Habilidades'
     };
 
