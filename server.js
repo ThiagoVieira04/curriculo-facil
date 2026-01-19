@@ -793,7 +793,7 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
         let browser;
         try {
             const launchOptions = {
-                headless: 'new',
+                headless: true,
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
@@ -803,9 +803,14 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
                     '--no-zygote',
                     '--disable-gpu',
                     '--disable-web-security',
-                    '--disable-features=VizDisplayCompositor'
+                    '--disable-features=VizDisplayCompositor',
+                    '--disable-extensions',
+                    '--disable-infobars',
+                    '--window-size=1280,1024'
                 ]
             };
+
+            console.log('[PDF] Iniciando browser com opções:', JSON.stringify(launchOptions));
 
             // Carregamento dinâmico do Puppeteer baseado no ambiente
             if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
@@ -837,7 +842,9 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
                     throw new Error('Puppeteer carregado mas método launch não está disponível');
                 }
 
+                console.log('[PDF] Puppeteer carregado com sucesso, iniciando launch...');
                 browser = await puppeteer.launch(launchOptions);
+                console.log('[PDF] Puppeteer launch finalizado');
             }
 
             if (!browser) {
@@ -1443,30 +1450,37 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Iniciar servidor apenas se não for invocado por requerimento (Vercel/Testes)
-if (require.main === module) {
-    const server = app.listen(PORT, () => {
-        logger.success(`Servidor rodando na porta ${PORT}`);
-        logger.info(`Acesse: http://localhost:${PORT}`);
-        logger.info(`Memória inicial: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`);
-    });
+// Iniciar servidor
+function startServer() {
+    try {
+        const server = app.listen(PORT, () => {
+            logger.success(`Servidor rodando na porta ${PORT}`);
+            logger.info(`Acesse: http://localhost:${PORT}`);
+            logger.info(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+        });
+
+        // Graceful shutdown
+        const shutdown = () => {
+            logger.warn('Encerrando servidor...');
+            server.close(() => {
+                logger.success('Servidor encerrado com sucesso');
+                process.exit(0);
+            });
+        };
+
+        process.on('SIGTERM', shutdown);
+        process.on('SIGINT', shutdown);
+
+        return server;
+    } catch (error) {
+        logger.error('Erro ao iniciar servidor:', error);
+        process.exit(1);
+    }
 }
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    logger.warn('Recebido SIGTERM, encerrando servidor...');
-    server.close(() => {
-        logger.success('Servidor encerrado com sucesso');
-        process.exit(0);
-    });
-});
-
-process.on('SIGINT', () => {
-    logger.warn('Recebido SIGINT, encerrando servidor...');
-    server.close(() => {
-        logger.success('Servidor encerrado com sucesso');
-        process.exit(0);
-    });
-});
+if (require.main === module || process.env.AUTO_START === 'true') {
+    startServer();
+}
 
 module.exports = app;
+module.exports.startServer = startServer;

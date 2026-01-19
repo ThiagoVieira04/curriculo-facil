@@ -571,7 +571,10 @@ async function downloadPDF(cvId, retryCount = 0) {
             setTimeout(() => downloadPDF(cvId, retryCount + 1), 2000);
             return;
         } else {
-            showError(`Erro ao baixar PDF: ${error.message}`);
+            // Se houver detalhes extras na mensagem de erro, mostra também
+            const detailedError = error.message;
+            showError(`Erro ao baixar PDF: ${detailedError}`);
+            console.error('Detalhes técnicos do erro:', detailedError);
         }
     }
 }
