@@ -1003,14 +1003,17 @@ async function handleATSAnalyzeFile(event) {
             body: formData
         });
 
-        if (!response.ok) throw new Error('Falha na análise');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || errorData.error || 'Falha na análise');
+        }
 
         const report = await response.json();
         displayATSReport(report);
         trackEvent('ats_analyze_file_success', { score: report.score });
     } catch (error) {
         console.error('Erro ao analisar arquivo:', error);
-        showError('Erro ao analisar o arquivo. Verifique se é um PDF ou DOCX válido.');
+        showError(error.message || 'Erro ao analisar o arquivo. Verifique se é um PDF ou DOCX válido.');
         trackEvent('ats_analyze_file_error');
     } finally {
         btn.innerHTML = originalText;

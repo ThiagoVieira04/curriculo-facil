@@ -44,26 +44,29 @@ const validation = {
         return config.VALIDATION.PHONE_REGEX.test(phone);
     },
 
-    validateFileUpload: (file) => {
+    validateFileUpload: (file, type = 'photo') => {
         if (!file) return { valid: true };
 
-        if (file.size > config.UPLOAD.MAX_FILE_SIZE) {
+        const uploadConfig = type === 'resume' ? config.UPLOAD.RESUME : config.UPLOAD;
+
+        if (file.size > uploadConfig.MAX_FILE_SIZE) {
             return {
                 valid: false,
-                error: `Arquivo muito grande. Máximo ${config.UPLOAD.MAX_FILE_SIZE / 1024 / 1024}MB.`
+                error: `Arquivo muito grande. Máximo ${uploadConfig.MAX_FILE_SIZE / 1024 / 1024}MB.`
             };
         }
 
-        if (!file.mimetype || !config.UPLOAD.ALLOWED_TYPES.includes(file.mimetype)) {
+        if (!file.mimetype || !uploadConfig.ALLOWED_TYPES.includes(file.mimetype)) {
+            const typesMsg = type === 'resume' ? 'Use PDF ou DOCX.' : 'Use JPG ou PNG.';
             return {
                 valid: false,
-                error: 'Formato de arquivo não suportado. Use JPG ou PNG.'
+                error: `Formato de arquivo não suportado. ${typesMsg}`
             };
         }
 
         // Verificação extra de extensão
         const ext = file.originalname.toLowerCase().split('.').pop();
-        if (!config.UPLOAD.ALLOWED_EXTENSIONS.some(allowed => allowed.includes(ext))) {
+        if (!uploadConfig.ALLOWED_EXTENSIONS.some(allowed => allowed.includes(ext))) {
             return {
                 valid: false,
                 error: 'Extensão de arquivo inválida.'

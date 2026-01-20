@@ -13,9 +13,17 @@ const config = {
 
     // Upload de arquivos
     UPLOAD: {
-        MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+        MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB para fotos
         ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png'],
-        ALLOWED_EXTENSIONS: ['.jpg', '.jpeg', '.png']
+        ALLOWED_EXTENSIONS: ['.jpg', '.jpeg', '.png'],
+        RESUME: {
+            MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB para currículos
+            ALLOWED_TYPES: [
+                'application/pdf',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ],
+            ALLOWED_EXTENSIONS: ['.pdf', '.docx']
+        }
     },
 
     // Validação

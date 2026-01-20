@@ -9,6 +9,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
+const fileType = require('file-type');
 
 // Configurações e utilitários
 const config = require('./config');
@@ -838,29 +839,67 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
 
 // Análise ATS de Arquivo (Upload)
 app.post('/api/ats-analyze-file', upload.single('resume'), async (req, res) => {
+    const requestId = Date.now().toString(36);
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'Nenhum arquivo enviado' });
         }
 
-        let text = '';
-        const mimeType = req.file.mimetype;
+        // 1. Validação Robusta (Tamanho e MIME Type)
+        const validationResult = validation.validateFileUpload(req.file, 'resume');
+        if (!validationResult.valid) {
+            return res.status(400).json({ error: validationResult.error });
+        }
 
-        if (mimeType === 'application/pdf') {
-            const data = await pdfParse(req.file.buffer);
-            text = data.text;
-        } else if (mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            const data = await mammoth.extractRawText({ buffer: req.file.buffer });
-            text = data.value;
-        } else {
-            return res.status(400).json({ error: 'Formato de arquivo não suportado. Use PDF ou DOCX.' });
+        // 2. Verificação de tipo real por Buffer (Segurança extra)
+        const typeInfo = await fileType.fromBuffer(req.file.buffer);
+        const allowedMimeTypes = config.UPLOAD.RESUME.ALLOWED_TYPES;
+
+        if (!typeInfo || !allowedMimeTypes.includes(typeInfo.mime)) {
+            // Fallback para aceitar se o multer identificou mas o file-type falhou (comum em DOCX)
+            if (!allowedMimeTypes.includes(req.file.mimetype)) {
+                return res.status(400).json({ error: 'O conteúdo do arquivo não corresponde a um PDF ou DOCX válido.' });
+            }
+        }
+
+        let text = '';
+        const mimeType = typeInfo ? typeInfo.mime : req.file.mimetype;
+
+        // 3. Parsing de Conteúdo
+        try {
+            if (mimeType === 'application/pdf') {
+                const data = await pdfParse(req.file.buffer);
+                text = data.text;
+            } else {
+                // DOCX
+                const data = await mammoth.extractRawText({ buffer: req.file.buffer });
+                text = data.value;
+            }
+        } catch (parseError) {
+            console.error(`[${requestId}] Erro no parsing:`, parseError);
+            return res.status(422).json({
+                error: 'Erro de leitura',
+                message: 'Não foi possível ler o conteúdo do arquivo. Verifique se o arquivo não está protegido por senha ou corrompido.'
+            });
+        }
+
+        // 4. Tratamento de Arquivos "Vazios" (Scanners/Imagens)
+        const cleanText = text.replace(/\s+/g, ' ').trim();
+        if (cleanText.length < 50) {
+            return res.status(422).json({
+                error: 'Conteúdo insuficiente',
+                message: 'O arquivo parece estar vazio ou é uma imagem (digitalizado por scanner). Para uma análise ATS, o arquivo deve conter texto selecionável.'
+            });
         }
 
         const report = analyzeATS(text);
         res.json(report);
     } catch (error) {
-        console.error('Erro na análise ATS de arquivo:', error);
-        res.status(500).json({ error: 'Erro ao processar o arquivo para análise.' });
+        console.error(`[${requestId}] Erro na análise ATS de arquivo:`, error);
+        res.status(500).json({
+            error: 'Erro interno',
+            message: 'Ocorreu um erro inesperado ao processar sua análise. Tente novamente em instantes.'
+        });
     }
 });
 
