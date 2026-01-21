@@ -1,3 +1,4 @@
+// Deploy Trigger: Vercel Retry
 const express = require('express');
 const multer = require('multer');
 // Retirando requires topo de nível de bibliotecas nativas para evitar erros em Serverless/Vercel
@@ -53,7 +54,7 @@ function rateLimit(req, res, next) {
     if (process.env.NODE_ENV !== 'production') {
         return next();
     }
-    
+
     const ip = req.ip || req.connection.remoteAddress || 'unknown';
     const cleaned = rateLimiting.cleanupOldEntries(rateLimitMap);
     if (cleaned > 0) {
@@ -61,9 +62,9 @@ function rateLimit(req, res, next) {
     }
 
     const result = rateLimiting.checkRateLimit(ip, rateLimitMap);
-    
+
     if (!result.allowed) {
-        return res.status(429).json({ 
+        return res.status(429).json({
             error: 'Muitas tentativas. Tente novamente em 1 hora.',
             retryAfter: result.retryAfter
         });
