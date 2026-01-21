@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function initializeApp() {
+    // Verificação de ambiente (Live Server vs Node.js)
+    checkEnvironment();
+
     // Event listeners
     setupEventListeners();
 
@@ -414,7 +417,11 @@ async function handleFormSubmit(event) {
         console.error('Erro ao gerar currículo:', error);
 
         let errorMessage = 'Erro ao gerar currículo. Tente novamente.';
-        if (error.name === 'AbortError') {
+
+        // Mensagens de erro amigáveis para problemas de ambiente
+        if (error.message.includes('405') || error.message.includes('404') || error.message.includes('Failed to fetch')) {
+            errorMessage = '⚠️ Erro de conexão com o servidor. \n\nVerifique se você está acessando pelo endereço correto: http://localhost:3000 (e não pela porta 5500/5501).';
+        } else if (error.name === 'AbortError') {
             errorMessage = 'Tempo limite excedido. Tente novamente.';
         } else if (error.message) {
             errorMessage = error.message;
@@ -948,7 +955,13 @@ async function handleATSAnalyzeFile(event) {
         console.error('Erro ao analisar arquivo:', error);
         showError(error.message || 'Erro ao analisar o arquivo. Verifique se é um PDF ou DOCX válido.');
         trackEvent('ats_analyze_file_error');
-    } finally {
+
+        // Tratamento específico para erro de ambiente
+        if (error.message.includes('405') || error.message.includes('404')) {
+            showError('⚠️ O servidor de análise não foi encontrado. Acesse via http://localhost:3000');
+        } else {
+            showError(error.message || 'Erro ao analisar o arquivo. Verifique se é um PDF ou DOCX válido.');
+        }
         btn.innerHTML = originalText;
         btn.disabled = false;
         event.target.value = ''; // Limpa o input
@@ -1043,3 +1056,52 @@ function injectATSSummaryIntoPreview(report) {
 // Expondo para o escopo global para o botão do preview
 window.displayATSReport = displayATSReport;
 window.lastATSReport = null;
+
+// Verificação de Ambiente
+function checkEnvironment() {
+    // Portas comuns do Live Server
+    const invalidPorts = ['5500', '5501', '5502', '5503'];
+    const port = window.location.port;
+    const protocol = window.location.protocol;
+
+    if (invalidPorts.includes(port) || protocol === 'file:') {
+        const warning = document.createElement('div');
+        warning.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #ef4444;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            z-index: 99999;
+            font-family: sans-serif;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        `;
+        warning.innerHTML = `
+            <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">⚠️ ALERTA DE AMBIENTE INCORRETO</div>
+            <div>Você está acessando via Live Server/Arquivo (porta ${port || 'file'}). O sistema não funcionará corretamente.</div>
+            <div style="margin-top: 10px;">
+                👉 Por favor, acesse o endereço correto: 
+                <a href="http://localhost:3000" style="color: white; text-decoration: underline; font-weight: bold; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 4px;">http://localhost:3000</a>
+            </div>
+            <button onclick="this.parentElement.remove()" style="position: absolute; right: 10px; top: 10px; background: none; border: none; color: white; cursor: pointer; font-size: 20px;">×</button>
+        `;
+        document.body.prepend(warning);
+        document.body.style.paddingTop = '80px'; // Empurrar conteúdo para baixo
+
+        // Desabilitar botões para evitar frustração
+        setTimeout(() => {
+            const buttons = document.querySelectorAll('button[type="submit"]');
+            buttons.forEach(btn => {
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '❌ Acesse localhost:3000';
+                btn.style.opacity = '0.7';
+                btn.style.cursor = 'not-allowed';
+                btn.title = 'Funcionalidade indisponível nesta porta';
+            });
+        }, 1000);
+    }
+}
