@@ -55,8 +55,10 @@ app.use(helmet(config.SECURITY.HELMET_OPTIONS));
 app.use(cors(config.SECURITY.CORS_OPTIONS));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.static('public'));
 app.set('trust proxy', true);
+
+// IMPORTANTE: Rotas dinâmicas ANTES de express.static
+// Isso garante que /sobre, /contato, /api/* sejam processadas antes de procurar arquivos estáticos
 
 // Rota de diagnóstico leve (sem dependências pesadas)
 app.get('/api/debug-env', (req, res) => {
@@ -76,18 +78,25 @@ app.use((req, res, next) => {
     next();
 });
 
-// Integrar Rotas
+// Integrar Rotas (ANTES de express.static)
 app.use('/sobre', sobreRoute);
 app.use('/contato', contatoRoute);
 app.use('/dicas', dicasRoute);
+
+// Servir arquivos estáticos DEPOIS das rotas dinâmicas
+app.use(express.static('public'));
 
 // Configuração do Multer otimizada
 const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 10 * 1024 * 1024, // Limite global de 10MB para segurança (validado especificamente por rota)
+        fileSize: 10 * 1024 * 1024,
         files: 1
+    },
+    fileFilter: (req, file, cb) => {
+        // Aceita qualquer arquivo, validação acontece depois
+        cb(null, true);
     }
 });
 
@@ -694,9 +703,19 @@ const templates = {
 
 // Rotas da API
 
-// Gerar currículo (rate limit desabilitado para desenvolvimento)
-// Gerar currículo (Robustecido)
-app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
+// Gerar currículo (Robustecido com melhor parsing de FormData)
+app.post('/api/generate-cv', (req, res, next) => {
+    upload.single('photo')(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            console.error('Multer error:', err);
+            return res.status(400).json({ error: 'Erro no upload de arquivo' });
+        } else if (err) {
+            console.error('Upload error:', err);
+            return res.status(400).json({ error: 'Erro ao processar arquivo' });
+        }
+        next();
+    });
+}, async (req, res) => {
     const requestId = Date.now().toString(36);
     console.log(`[${requestId}] 🚀 Iniciando geração de currículo (v2)`);
     console.log(`[${requestId}] Memória antes: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`);
@@ -707,10 +726,17 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
             throw new Error('Payload vazio ou corrompido');
         }
 
+        // Extrair dados do body (FormData é parseado automaticamente pelo multer)
+        // Se houver foto, multer já processou; se não, os campos estão em req.body
         const {
             nome, cargo, email, telefone, cidade,
             experiencia, formacao, habilidades,
-            template = 'simples'
+            template = 'simples',
+            // Campos opcionais
+            nascimento, estadoCivil, naturalidade, nacionalidade, objetivo, cursos,
+            empresa1, funcao1, periodo1,
+            empresa2, funcao2, periodo2,
+            empresa3, funcao3, periodo3
         } = req.body;
 
         // Campos obrigatórios
@@ -740,14 +766,21 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
         };
 
         // Sanitização de Opcionais
-        const optionalFields = ['nascimento', 'estadoCivil', 'naturalidade', 'nacionalidade', 'objetivo', 'cursos',
-            'empresa1', 'funcao1', 'periodo1',
-            'empresa2', 'funcao2', 'periodo2',
-            'empresa3', 'funcao3', 'periodo3'];
-
-        optionalFields.forEach(field => {
-            cleanData[field] = validation.sanitizeText(req.body[field]);
-        });
+        cleanData.nascimento = validation.sanitizeText(nascimento);
+        cleanData.estadoCivil = validation.sanitizeText(estadoCivil);
+        cleanData.naturalidade = validation.sanitizeText(naturalidade);
+        cleanData.nacionalidade = validation.sanitizeText(nacionalidade);
+        cleanData.objetivo = validation.sanitizeText(objetivo);
+        cleanData.cursos = validation.sanitizeText(cursos);
+        cleanData.empresa1 = validation.sanitizeText(empresa1);
+        cleanData.funcao1 = validation.sanitizeText(funcao1);
+        cleanData.periodo1 = validation.sanitizeText(periodo1);
+        cleanData.empresa2 = validation.sanitizeText(empresa2);
+        cleanData.funcao2 = validation.sanitizeText(funcao2);
+        cleanData.periodo2 = validation.sanitizeText(periodo2);
+        cleanData.empresa3 = validation.sanitizeText(empresa3);
+        cleanData.funcao3 = validation.sanitizeText(funcao3);
+        cleanData.periodo3 = validation.sanitizeText(periodo3);
 
         // Formatação de Data (yyyy-mm-dd -> dd/mm/aaaa)
         if (cleanData.nascimento && /^\d{4}-\d{2}-\d{2}$/.test(cleanData.nascimento)) {
@@ -840,9 +873,19 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
     }
 });
 
-// Análise ATS de Arquivo (Upload)
-// Análise ATS de Arquivo (Upload)
-app.post('/api/ats-analyze-file', upload.single('resume'), async (req, res) => {
+// Análise ATS de Arquivo (Upload) - VERSÃO MELHORADA
+app.post('/api/ats-analyze-file', (req, res, next) => {
+    upload.single('resume')(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            console.error('Multer error:', err);
+            return res.status(400).json({ error: 'Erro no upload de arquivo' });
+        } else if (err) {
+            console.error('Upload error:', err);
+            return res.status(400).json({ error: 'Erro ao processar arquivo' });
+        }
+        next();
+    });
+}, async (req, res) => {
     const requestId = Date.now().toString(36);
     console.log(`[${requestId}] 🚀 Iniciando análise ATS de arquivo`);
 
@@ -851,13 +894,12 @@ app.post('/api/ats-analyze-file', upload.single('resume'), async (req, res) => {
             return res.status(400).json({ error: 'Nenhum arquivo enviado' });
         }
 
-        // 1. Validação de Tamanho (Multer já limita, mas reforçamos)
+        // 1. Validação de Tamanho
         if (req.file.size > config.UPLOAD.RESUME.MAX_FILE_SIZE) {
             return res.status(400).json({ error: 'Arquivo excede o tamanho máximo permitido.' });
         }
 
-        // 2. Validação REAL de Tipo (Content-Based)
-        // Não confiamos no req.file.mimetype vindo do cliente
+        // 2. Detecção de Tipo com Fallback
         let typeInfo = await fileType.fromBuffer(req.file.buffer);
         let mimeType = typeInfo ? typeInfo.mime : '';
         let ext = typeInfo ? typeInfo.ext : '';
@@ -866,45 +908,52 @@ app.post('/api/ats-analyze-file', upload.single('resume'), async (req, res) => {
 
         let text = '';
         let parsingMethod = '';
+        let parseError = null;
 
-        // Tenta detectar se é DOCX (muitas vezes detectado como ZIP)
-        const isZip = mimeType === 'application/zip';
-        const isDocx = mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        // Estratégia: Tentar PDF primeiro, depois DOCX
         const isPdf = mimeType === 'application/pdf';
+        const isDocx = mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        const isZip = mimeType === 'application/zip';
+        const isUnknown = !mimeType;
 
-        try {
-            if (isPdf) {
-                // É PDF, tenta ler
+        // Tentar PDF
+        if (isPdf) {
+            try {
                 parsingMethod = 'PDF-PARSE';
                 const data = await pdfParse(req.file.buffer);
                 text = data.text;
-            } else if (isDocx || isZip || !mimeType) {
-                // Pode ser DOCX (que é um ZIP) ou arquivo sem assinatura clara (tenta como docx via mammoth)
-                // Mammoth lança erro se não for docx válido
+                console.log(`[${requestId}] PDF parseado com sucesso: ${text.length} caracteres`);
+            } catch (e) {
+                console.warn(`[${requestId}] Falha ao parsear como PDF:`, e.message);
+                parseError = e;
+                // Tenta DOCX como fallback
+                text = '';
+            }
+        }
+
+        // Se PDF falhou ou não era PDF, tentar DOCX
+        if (!text && (isDocx || isZip || isUnknown)) {
+            try {
                 parsingMethod = 'MAMMOTH';
                 const data = await mammoth.extractRawText({ buffer: req.file.buffer });
-                text = data.value;
-
-                // Se mammoth funcionou, confirmamos que é um DOCX válido
-                if (!text && !data.messages) {
-                    // Se não extraiu nada e não deu erro, suspeito. Mas deixamos passar para validação de conteúdo.
-                }
-            } else {
-                return res.status(400).json({
-                    error: 'Formato de arquivo não suportado.',
-                    details: 'Apenas arquivos PDF (.pdf) e Word (.docx) legítimos são aceitos.'
-                });
+                text = data.value || '';
+                console.log(`[${requestId}] DOCX parseado com sucesso: ${text.length} caracteres`);
+            } catch (e) {
+                console.warn(`[${requestId}] Falha ao parsear como DOCX:`, e.message);
+                parseError = e;
             }
-        } catch (parseError) {
-            console.error(`[${requestId}] Erro no parsing (${parsingMethod}):`, parseError.message);
+        }
+
+        // Se ambos falharam
+        if (!text) {
+            console.error(`[${requestId}] Nenhum parser funcionou. Tipo: ${mimeType}, Erro: ${parseError?.message}`);
             return res.status(422).json({
                 error: 'Arquivo corrompido ou inválido',
-                message: 'O sistema não conseguiu ler o conteúdo deste arquivo. Verifique se é um PDF ou DOCX válido e não está protegido por senha.'
+                message: 'O sistema não conseguiu ler o conteúdo deste arquivo. Verifique se é um PDF ou DOCX válido, não está protegido por senha e contém texto selecionável.'
             });
         }
 
-        // 4. Validação de Conteúdo (Texto Suficiente)
-        // Isso bloqueia imagens escaneadas salvas como PDF
+        // 3. Validação de Conteúdo
         const cleanText = text.replace(/\s+/g, ' ').trim();
         if (cleanText.length < 50) {
             return res.status(422).json({
@@ -913,6 +962,7 @@ app.post('/api/ats-analyze-file', upload.single('resume'), async (req, res) => {
             });
         }
 
+        // 4. Análise ATS
         const report = analyzeATS(text);
         res.json(report);
 
