@@ -64,9 +64,24 @@ const config = {
             contentSecurityPolicy: false // Para permitir AdSense
         },
         CORS_OPTIONS: {
-            origin: process.env.NODE_ENV === 'production'
-                ? ['https://gerador-curriculos.vercel.app']
-                : true,
+            origin: function (origin, callback) {
+                // Permitir requisições sem origem (como mobile apps ou curl)
+                if (!origin) return callback(null, true);
+
+                // Em desenvolvimento, permitir localhost
+                if (process.env.NODE_ENV !== 'production') {
+                    return callback(null, true);
+                }
+
+                // Em produção, permitir qualquer subdomínio vercel.app
+                if (origin.endsWith('.vercel.app') || origin === 'https://gerador-curriculos.vercel.app') {
+                    return callback(null, true);
+                }
+
+                // Bloquear outros
+                console.error('CORS bloqueado para:', origin);
+                callback(new Error('Not allowed by CORS'));
+            },
             credentials: true
         }
     }
