@@ -1132,14 +1132,8 @@ app.all('/api/download-pdf/:id?', async (req, res) => {
         } catch (launchError) {
             console.error('[PDF] Erro ao iniciar browser:', launchError);
 
-            // Log detalhado em arquivo para debug
-            try {
-                const fs = require('fs');
-                const logMessage = `[${new Date().toISOString()}] Erro ao iniciar browser: ${launchError.stack || launchError}\n`;
-                fs.appendFileSync('pdf-error.log', logMessage);
-            } catch (fsError) {
-                console.error('Erro ao gravar log de PDF:', fsError);
-            }
+            // Log detalhado para console (Vercel Runtime Logs)
+            console.error(`[${new Date().toISOString()}] Erro ao iniciar browser:`, launchError);
 
             return res.status(500).json({
                 error: 'Erro técnico ao iniciar gerador de PDF',

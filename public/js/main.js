@@ -8,7 +8,7 @@ let isSubmitting = false; // Previne duplo submit
 
 // Configurações
 const CONFIG = {
-    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+    MAX_FILE_SIZE: 4 * 1024 * 1024, // 4MB (Vercel Limit safe margin)
     ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png'],
     DEBOUNCE_DELAY: 1000,
     MAX_TEXT_LENGTH: 2000
