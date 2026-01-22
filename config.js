@@ -74,7 +74,7 @@ const config = {
                 }
 
                 // Em produção, permitir qualquer subdomínio vercel.app
-                if (origin.endsWith('.vercel.app') || origin === 'https://gerador-curriculos.vercel.app') {
+                if (origin.endsWith('.vercel.app') || origin === 'https://curriculum-facil.vercel.app') {
                     return callback(null, true);
                 }
 
