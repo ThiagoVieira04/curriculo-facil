@@ -1,17 +1,64 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.js"
+      "src": "index.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
     }
   ],
-  "functions": {
-    "api/index.js": {
-      "memory": 3008,
-      "maxDuration": 60
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/sobre",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/contato",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/dicas",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/cv/(.*)",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/privacidade",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/termos",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/public/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/public/js/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/public/images/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.html"
     }
-  },
+  ],
   "env": {
     "NODE_ENV": "production"
   },
