@@ -68,10 +68,7 @@ app.get('/api/debug-env', (req, res) => {
     });
 });
 
-// Health check para Vercel
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+
 
 // Rota raiz para verificar se servidor está rodando
 app.get('/api/status', (req, res) => {
