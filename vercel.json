@@ -3,31 +3,31 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/sobre",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/contato",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/dicas",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/cv/(.*)",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/privacidade",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/termos",
-      "dest": "/index.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/css/(.*)",
