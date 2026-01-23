@@ -22,8 +22,8 @@ function checkDependencies() {
     const dependencies = [
         'express',
         'multer',
-        'sharp',
-        'puppeteer',
+        // 'sharp', // Removido - dependência opcional carregada dinamicamente
+        // 'puppeteer', // Removido - dependência opcional carregada dinamicamente
         'cors',
         'helmet'
     ];
