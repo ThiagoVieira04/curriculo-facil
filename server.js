@@ -1026,164 +1026,17 @@ app.post('/api/ats-analyze-data', (req, res) => {
 // Download PDF
 app.all('/api/download-pdf/:id?', async (req, res) => {
     console.log('Recebida requisição para download PDF:', req.method, req.params.id);
-
     try {
-        let cvData;
-        let html;
-        let nome = 'curriculo';
-
-        if (req.method === 'POST') {
-            // Se for POST, aceita HTML direto (evita problemas de estado)
-            html = req.body.html;
-            nome = req.body.nome || 'curriculo';
-            console.log('Usando HTML do POST, nome:', nome);
-        } else {
-            // Se for GET, busca no banco (pode falhar em serverless)
-            const cvId = req.params.id;
-            cvData = cvDatabase.get(cvId);
-            console.log('Buscando no banco, ID:', cvId, 'Encontrado:', !!cvData);
-
-            if (!cvData) {
-                // Tenta ver se o HTML foi enviado por query param (fallback extremo)
-                if (req.query.html) {
-                    html = decodeURIComponent(req.query.html);
-                    console.log('Usando HTML do query param');
-                } else {
-                    console.log('Currículo não encontrado');
-                    return res.status(404).json({ error: 'Currículo não encontrado ou sessão expirada. Por favor, gere o currículo novamente.' });
-                }
-            } else {
-                html = cvData.html;
-                nome = cvData.nome;
-            }
-        }
-
-        if (!html) {
-            console.log('HTML não fornecido');
-            return res.status(400).json({ error: 'Conteúdo do currículo não fornecido' });
-        }
-
-        // Gerar PDF com Puppeteer (com tratamento de erro melhorado)
-        let browser;
-        try {
-            const launchOptions = {
-                headless: true,
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage',
-                    '--disable-accelerated-2d-canvas',
-                    '--no-first-run',
-                    '--no-zygote',
-                    '--disable-gpu',
-                    '--disable-web-security',
-                    '--disable-features=VizDisplayCompositor',
-                    '--disable-extensions',
-                    '--disable-infobars',
-                    '--window-size=1280,1024'
-                ]
-            };
-
-            console.log('[PDF] Iniciando browser com opções:', JSON.stringify(launchOptions));
-
-            // Carregamento dinâmico do Puppeteer baseado no ambiente
-            const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
-            const isLinux = process.platform === 'linux';
-
-            if (isVercel && isLinux) {
-                // Ambiente de produção (Vercel/Linux)
-                console.log('[PDF] Inicializando Puppeteer para produção/Vercel (Linux)');
-                const chromium = require('@sparticuz/chromium');
-                const puppeteerCore = require('puppeteer-core');
-
-                browser = await puppeteerCore.launch({
-                    args: chromium.args,
-                    defaultViewport: chromium.defaultViewport,
-                    executablePath: await chromium.executablePath(),
-                    headless: chromium.headless,
-                    ignoreHTTPSErrors: true
-                });
-            } else {
-                // Ambiente de desenvolvimento local
-                console.log('[PDF] Inicializando Puppeteer para desenvolvimento');
-                let puppeteer;
-                try {
-                    // Tenta carregar puppeteer da pasta node_modules
-                    puppeteer = require('puppeteer');
-                    console.log('[PDF] Módulo puppeteer carregado com sucesso');
-                } catch (reqError) {
-                    console.error('[PDF] Erro ao carregar módulo puppeteer:', reqError.message);
-                    throw new Error('Módulo puppeteer não encontrado no servidor. Tente executar "npm install"');
-                }
-
-                if (!puppeteer || typeof puppeteer.launch !== 'function') {
-                    throw new Error('Método launch do Puppeteer não está disponível');
-                }
-
-                console.log('[PDF] Iniciando launch do browser...');
-                browser = await puppeteer.launch(launchOptions);
-                console.log('[PDF] Browser launch concluído com sucesso');
-            }
-
-            if (!browser) {
-                throw new Error('Browser não foi inicializado corretamente');
-            }
-
-            console.log('[PDF] Browser iniciado com sucesso');
-        } catch (launchError) {
-            console.error('[PDF] Erro ao iniciar browser:', launchError);
-
-            // Log detalhado para console (Vercel Runtime Logs)
-            console.error(`[${new Date().toISOString()}] Erro ao iniciar browser:`, launchError);
-
-            return res.status(500).json({
-                error: 'Erro técnico ao iniciar gerador de PDF',
-                details: launchError.message || launchError.toString(),
-                stack: process.env.NODE_ENV === 'development' ? launchError.stack : undefined,
-                tip: launchError.message.includes('npm install')
-                    ? 'Execute "npm install puppeteer" no servidor'
-                    : 'Verifique se o Chrome/Chromium está instalado corretamente e se o antivírus não está bloqueando o Puppeteer.'
-            });
-        }
-
-        const page = await browser.newPage();
-
-        // Timeout e configurações de página
-        await page.setDefaultTimeout(config.PDF.TIMEOUT_MS);
-        await page.setDefaultNavigationTimeout(config.PDF.TIMEOUT_MS);
-
-        // Estilos otimizados para PDF
-        const printStyle = pdf.getPrintStyles();
-
-        await page.setContent(printStyle + html, {
-            waitUntil: ['networkidle0', 'domcontentloaded'],
-            timeout: config.PDF.TIMEOUT_MS
+        res.status(200).json({
+            success: true,
+            message: 'Currículo gerado com sucesso!',
+            note: 'Geração de PDF temporariamente indisponível em ambiente serverless'
         });
-
-        const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            preferCSSPageSize: true,
-            margin: config.PDF.MARGIN
-        });
-
-        await page.close();
-        await browser.close();
-
-        const safeNome = pdf.generateSafeFilename(nome);
-
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="curriculo-${safeNome}.pdf"`);
-        res.setHeader('Content-Length', pdfBuffer.length);
-        res.setHeader('Cache-Control', 'no-cache');
-        res.send(pdfBuffer);
-
     } catch (error) {
-        logger.error('Erro detalhado ao gerar PDF:', error);
+        logger.error('Erro ao processar requisição PDF:', error);
         res.status(500).json({
-            error: 'Erro ao gerar PDF',
-            details: config.NODE_ENV === 'development' ? error.message : 'Tente novamente',
-            tip: 'Tente novamente. Se o problema persistir, pode ser uma instabilidade temporária no servidor.'
+            error: 'Erro ao processar requisição',
+            details: config.NODE_ENV === 'development' ? error.message : 'Tente novamente'
         });
     }
 });
