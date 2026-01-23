@@ -16,13 +16,6 @@ const fileType = require('file-type');
 const config = require('./config');
 const { validation, rateLimiting, cleanup, pdf, logger } = require('./utils');
 
-// Rotas estáticas (Require explícito para garantir bundling na Vercel)
-const sobreRoute = require('./sobre-route');
-const contatoRoute = require('./contato-route');
-const dicasRoute = require('./dicas-route');
-
-console.log('✅ Rotas auxiliares carregadas');
-
 const app = express();
 const PORT = config.PORT;
 
@@ -96,12 +89,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Integrar Rotas (ANTES de express.static)
-app.use('/sobre', sobreRoute);
-app.use('/contato', contatoRoute);
-app.use('/dicas', dicasRoute);
-
-// Rota para servir sobre.html
+// Rotas para páginas HTML estáticas
 app.get('/sobre', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'sobre.html'));
 });
