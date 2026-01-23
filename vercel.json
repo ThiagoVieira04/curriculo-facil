@@ -62,7 +62,5 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "alias": [
-    "curriculum-facil.vercel.app"
-  ]
+  "alias": ["gerador-de-curriculos.vercel.app"]
 }
