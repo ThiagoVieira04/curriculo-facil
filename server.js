@@ -101,6 +101,11 @@ app.use('/sobre', sobreRoute);
 app.use('/contato', contatoRoute);
 app.use('/dicas', dicasRoute);
 
+// Rota para servir sobre.html
+app.get('/sobre', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'sobre.html'));
+});
+
 // Servir arquivos estáticos DEPOIS das rotas dinâmicas
 app.use(express.static('public'));
 
