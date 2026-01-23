@@ -40,4 +40,135 @@ function makeRequest(path) {
             res.on('data', chunk => data += chunk);
             res.on('end', () => {
                 try {
-                    resolve({\n                        status: res.statusCode,\n                        headers: res.headers,\n                        body: data ? JSON.parse(data) : data\n                    });\n                } catch (e) {\n                    resolve({\n                        status: res.statusCode,\n                        headers: res.headers,\n                        body: data\n                    });\n                }\n            });\n        });\n\n        req.on('error', reject);\n        req.on('timeout', () => {\n            req.destroy();\n            reject(new Error('Request timeout'));\n        });\n\n        req.end();\n    });\n}\n\nasync function runTests() {\n    log('\\n🧪 INICIANDO TESTES DE VALIDAÇÃO\\n', 'blue');\n\n    // Iniciar servidor\n    log('📍 Iniciando servidor na porta ' + PORT + '...', 'yellow');\n    server = app.listen(PORT, async () => {\n        log('✅ Servidor iniciado com sucesso\\n', 'green');\n\n        const tests = [\n            {\n                name: 'Health Check',\n                path: '/api/health',\n                expectedStatus: 200\n            },\n            {\n                name: 'Status',\n                path: '/api/status',\n                expectedStatus: 200\n            },\n            {\n                name: 'Debug Env',\n                path: '/api/debug-env',\n                expectedStatus: 200\n            },\n            {\n                name: 'Página Sobre',\n                path: '/sobre',\n                expectedStatus: 200\n            },\n            {\n                name: 'Página Contato',\n                path: '/contato',\n                expectedStatus: 200\n            },\n            {\n                name: 'Página Dicas',\n                path: '/dicas',\n                expectedStatus: 200\n            },\n            {\n                name: 'Página Privacidade',\n                path: '/privacidade',\n                expectedStatus: 200\n            },\n            {\n                name: 'Página Termos',\n                path: '/termos',\n                expectedStatus: 200\n            }\n        ];\n\n        let passed = 0;\n        let failed = 0;\n\n        for (const test of tests) {\n            try {\n                log(`\\n🔍 Testando: ${test.name}`, 'blue');\n                log(`   Path: ${test.path}`);\n\n                const response = await makeRequest(test.path);\n\n                if (response.status === test.expectedStatus) {\n                    log(`   ✅ Status: ${response.status} (esperado: ${test.expectedStatus})`, 'green');\n                    if (response.body && typeof response.body === 'object') {\n                        log(`   📦 Response: ${JSON.stringify(response.body).substring(0, 100)}...`);\n                    }\n                    passed++;\n                } else {\n                    log(`   ❌ Status: ${response.status} (esperado: ${test.expectedStatus})`, 'red');\n                    failed++;\n                }\n            } catch (error) {\n                log(`   ❌ Erro: ${error.message}`, 'red');\n                failed++;\n            }\n        }\n\n        // Resumo\n        log('\\n' + '='.repeat(50), 'blue');\n        log('📊 RESUMO DOS TESTES', 'blue');\n        log('='.repeat(50), 'blue');\n        log(`✅ Passou: ${passed}/${tests.length}`, 'green');\n        log(`❌ Falhou: ${failed}/${tests.length}`, failed > 0 ? 'red' : 'green');\n        log('='.repeat(50), 'blue');\n\n        if (failed === 0) {\n            log('\\n🎉 TODOS OS TESTES PASSARAM!\\n', 'green');\n            log('Você pode fazer deploy com segurança.\\n', 'green');\n        } else {\n            log('\\n⚠️  ALGUNS TESTES FALHARAM!\\n', 'red');\n            log('Verifique os erros acima antes de fazer deploy.\\n', 'red');\n        }\n\n        // Fechar servidor\n        server.close(() => {\n            log('🛑 Servidor encerrado\\n', 'yellow');\n            process.exit(failed > 0 ? 1 : 0);\n        });\n    });\n}\n\n// Executar testes\nrunTests().catch(error => {\n    log(`\\n❌ Erro ao executar testes: ${error.message}\\n`, 'red');\n    if (server) server.close();\n    process.exit(1);\n});\n
+                    resolve({
+                        status: res.statusCode,
+                        headers: res.headers,
+                        body: data ? JSON.parse(data) : data
+                    });
+                } catch (e) {
+                    resolve({
+                        status: res.statusCode,
+                        headers: res.headers,
+                        body: data
+                    });
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.on('timeout', () => {
+            req.destroy();
+            reject(new Error('Request timeout'));
+        });
+
+        req.end();
+    });
+}
+
+async function runTests() {
+    log('\n🧪 INICIANDO TESTES DE VALIDAÇÃO\n', 'blue');
+
+    // Iniciar servidor
+    log('📍 Iniciando servidor na porta ' + PORT + '...', 'yellow');
+    server = app.listen(PORT, async () => {
+        log('✅ Servidor iniciado com sucesso\n', 'green');
+
+        const tests = [
+            {
+                name: 'Health Check',
+                path: '/api/health',
+                expectedStatus: 200
+            },
+            {
+                name: 'Status',
+                path: '/api/status',
+                expectedStatus: 200
+            },
+            {
+                name: 'Debug Env',
+                path: '/api/debug-env',
+                expectedStatus: 200
+            },
+            {
+                name: 'Página Sobre',
+                path: '/sobre',
+                expectedStatus: 200
+            },
+            {
+                name: 'Página Contato',
+                path: '/contato',
+                expectedStatus: 200
+            },
+            {
+                name: 'Página Dicas',
+                path: '/dicas',
+                expectedStatus: 200
+            },
+            {
+                name: 'Página Privacidade',
+                path: '/privacidade',
+                expectedStatus: 200
+            },
+            {
+                name: 'Página Termos',
+                path: '/termos',
+                expectedStatus: 200
+            }
+        ];
+
+        let passed = 0;
+        let failed = 0;
+
+        for (const test of tests) {
+            try {
+                log(`\n🔍 Testando: ${test.name}`, 'blue');
+                log(`   Path: ${test.path}`);
+
+                const response = await makeRequest(test.path);
+
+                if (response.status === test.expectedStatus) {
+                    log(`   ✅ Status: ${response.status} (esperado: ${test.expectedStatus})`, 'green');
+                    if (response.body && typeof response.body === 'object') {
+                        log(`   📦 Response: ${JSON.stringify(response.body).substring(0, 100)}...`);
+                    }
+                    passed++;
+                } else {
+                    log(`   ❌ Status: ${response.status} (esperado: ${test.expectedStatus})`, 'red');
+                    failed++;
+                }
+            } catch (error) {
+                log(`   ❌ Erro: ${error.message}`, 'red');
+                failed++;
+            }
+        }
+
+        // Resumo
+        log('\n' + '='.repeat(50), 'blue');
+        log('📊 RESUMO DOS TESTES', 'blue');
+        log('='.repeat(50), 'blue');
+        log(`✅ Passou: ${passed}/${tests.length}`, 'green');
+        log(`❌ Falhou: ${failed}/${tests.length}`, failed > 0 ? 'red' : 'green');
+        log('='.repeat(50), 'blue');
+
+        if (failed === 0) {
+            log('\n🎉 TODOS OS TESTES PASSARAM!\n', 'green');
+            log('Você pode fazer deploy com segurança.\n', 'green');
+        } else {
+            log('\n⚠️  ALGUNS TESTES FALHARAM!\n', 'red');
+            log('Verifique os erros acima antes de fazer deploy.\n', 'red');
+        }
+
+        // Fechar servidor
+        server.close(() => {
+            log('🛑 Servidor encerrado\n', 'yellow');
+            process.exit(failed > 0 ? 1 : 0);
+        });
+    });
+}
+
+// Executar testes
+runTests().catch(error => {
+    log(`\n❌ Erro ao executar testes: ${error.message}\n`, 'red');
+    if (server) server.close();
+    process.exit(1);
+});
