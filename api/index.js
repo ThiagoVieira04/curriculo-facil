@@ -56,6 +56,15 @@ app.get('/contato', (req, res) => {
     }
 });
 
+app.get('/empresa', (req, res) => {
+    const filePath = path.join(publicPath, 'empresa.html');
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.sendFile(path.join(publicPath, 'index.html'));
+    }
+});
+
 // Catch-all para SPA - redireciona para home
 app.use((req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
