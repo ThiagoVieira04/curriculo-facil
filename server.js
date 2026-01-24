@@ -99,6 +99,56 @@ app.get('/dicas', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'dicas.html'));
 });
 
+// Rota para compartilhar/visualizar currículo
+app.get('/cv/:id', (req, res) => {
+    const { id } = req.params;
+    
+    // Buscar currículo no banco de dados em memória
+    const cv = cvDatabase.get(id);
+    
+    if (!cv) {
+        return res.status(404).send(`
+            <html>
+                <head><title>Currículo não encontrado</title></head>
+                <body style="font-family: Arial; text-align: center; padding: 50px;">
+                    <h1>Currículo não encontrado</h1>
+                    <p>O currículo que você está procurando não existe ou expirou.</p>
+                    <a href="/" style="color: #6366f1; text-decoration: none; font-weight: bold;">← Criar novo currículo</a>
+                </body>
+            </html>
+        `);
+    }
+    
+    // Retornar página com currículo
+    res.send(`
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>${cv.nome} - Currículo</title>
+                <style>
+                    body { font-family: Arial; margin: 0; padding: 20px; background: #f5f5f5; }
+                    .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+                    a { color: #6366f1; text-decoration: none; font-weight: bold; }
+                    a:hover { text-decoration: underline; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <header>
+                        <h1>Currículo de ${validation.sanitizeText(cv.nome)}</h1>
+                        <div>
+                            <a href="/" style="margin-right: 10px;">← Criar novo currículo</a>
+                            <a onclick="window.print()" style="cursor: pointer;">🖨️ Imprimir</a>
+                        </div>
+                    </header>
+                    <div>${cv.html}</div>
+                </div>
+            </body>
+        </html>
+    `);
+});
+
 // Servir arquivos estáticos DEPOIS das rotas dinâmicas
 app.use(express.static('public'));
 
@@ -744,7 +794,7 @@ app.post('/api/generate-cv', (req, res, next) => {
 
         // Extrair dados do body (FormData é parseado automaticamente pelo multer)
         // Se houver foto, multer já processou; se não, os campos estão em req.body
-        const {
+        let {
             nome, cargo, email, telefone, cidade,
             experiencia, formacao, habilidades,
             template = 'simples',
@@ -1248,9 +1298,13 @@ function startServer() {
     }
 }
 
+// Exportar app como default para Vercel
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = app;
+    module.exports.startServer = startServer;
+}
+
+// Auto-iniciar em ambiente local ou com flag
 if (require.main === module || process.env.AUTO_START === 'true') {
     startServer();
 }
-
-module.exports = app;
-module.exports.startServer = startServer;
