@@ -1,53 +1,23 @@
 {
   "version": 2,
+  "public": "public",
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
     },
     {
-      "src": "/sobre",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/contato",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/dicas",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/cv/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/privacidade",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/termos",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/public/images/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/api/index.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "alias": ["gerador-de-curriculos.vercel.app"]
+  }
 }
