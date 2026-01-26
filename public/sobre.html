@@ -11,6 +11,111 @@
         content="papel e sonhos, impressão, gráfica, serviços digitais, currículos, personalizados, informática">
     <link rel="canonical" href="https://curriculum-facil.vercel.app/sobre">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilos específicos da página Sobre */
+        .about-section {
+            padding: 3rem 0;
+        }
+
+        .about-section.bg-white {
+            background: #f8fafc;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: #475569;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content strong {
+            color: #2563eb;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #2563eb;
+        }
+
+        .service-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-card li {
+            padding: 0.5rem 0;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .service-card li:last-child {
+            border-bottom: none;
+        }
+
+        .service-card li:before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+
+            .services-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -51,9 +156,6 @@
                         serviços gráficos, digitais e soluções profissionais. Desde nossa fundação em <strong>28 de
                             setembro de 2012</strong>, nos dedicamos a oferecer serviços de qualidade e tecnologia
                         acessível para pessoas e empresas.</p>
-                    <p>Somos uma referência na comunidade, oferecendo desde soluções tradicionais até as mais modernas
-                        tecnologias. Cada cliente é importante para nós, e cada projeto realizado reforça nosso
-                        compromisso com a excelência.</p>
                 </div>
             </div>
         </section>
@@ -65,21 +167,14 @@
                 <div class="about-content">
                     <p>Tudo começou em <strong>2012</strong>, quando abrimos as portas com a missão de simplificar a
                         vida das pessoas através de serviços práticos, confiáveis e inovadores.</p>
-                    <p>Durante mais de uma década, evoluímos constantemente, acompanhando as mudanças do mercado e as
-                        necessidades de nossos clientes. Começamos como um pequeno estúdio de serviços gráficos e hoje
-                        oferecemos uma ampla gama de soluções que combinam o melhor da tradição com a modernidade
-                        digital.</p>
-                    <p>Nossa experiência acumulada nos permite entender profundamente o que nossos clientes precisam e
-                        entregar sempre mais do que esperam.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Serviços - Impressão e Gráfica -->
+        <!-- Serviços -->
         <section class="about-section">
             <div class="container">
                 <h3>Nossos Serviços</h3>
-
                 <div class="services-grid">
                     <div class="service-card">
                         <h4>🖨️ Impressão e Reprodução</h4>
@@ -87,81 +182,14 @@
                             <li>✓ Xerox e impressão digital</li>
                             <li>✓ Emissão de boletos</li>
                             <li>✓ Escaneamento de documentos</li>
-                            <li>✓ Envio para WhatsApp e E-mail</li>
                         </ul>
                     </div>
-
-                    <div class="service-card">
-                        <h4>📋 Documentação e Certidões</h4>
-                        <ul>
-                            <li>✓ Certidão negativa estadual</li>
-                            <li>✓ Certidão negativa federal</li>
-                            <li>✓ Certidão negativa eleitoral</li>
-                            <li>✓ Declaração de renda</li>
-                        </ul>
-                    </div>
-
                     <div class="service-card">
                         <h4>📄 Currículos e Documentos</h4>
                         <ul>
                             <li>✓ Criação de currículos profissionais</li>
                             <li>✓ Papelaria personalizada</li>
-                            <li>✓ Fotos (3x4, 10x15, 13x18)</li>
-                            <li>✓ Fotos em tamanho folha inteira</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-card">
-                        <h4>🏥 Documentos Especiais</h4>
-                        <ul>
-                            <li>✓ Caderneta de vacina nova</li>
-                            <li>✓ Reforma de caderneta de vacina</li>
-                            <li>✓ Reforma de bíblia</li>
-                            <li>✓ Caderneta de seguro de vida</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-card">
-                        <h4>🎨 Produtos Personalizados</h4>
-                        <ul>
-                            <li>✓ Canecas sublimadas</li>
-                            <li>✓ Camisas sublimadas</li>
-                            <li>✓ Azulejos sublimados</li>
-                            <li>✓ Topos de bolo</li>
-                            <li>✓ Adesivos personalizados</li>
-                            <li>✓ Banners</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-card">
-                        <h4>💿 Mídia e Áudio</h4>
-                        <ul>
-                            <li>✓ Músicas para pen drive</li>
-                            <li>✓ Gravação de áudio para propaganda</li>
-                            <li>✓ Cópias de mídia digital</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-card">
-                        <h4>🔌 Cabos e Acessórios</h4>
-                        <ul>
-                            <li>✓ Cabos tipo C e V8</li>
-                            <li>✓ Cabos HDMI</li>
-                            <li>✓ Cabos de rede RJ45</li>
-                            <li>✓ Diversos acessórios</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-card">
-                        <h4>🖥️ Informática e Tecnologia</h4>
-                        <ul>
-                            <li>✓ Consertos de computadores</li>
-                            <li>✓ Formatação de notebooks</li>
-                            <li>✓ Desbloqueio de conta Google</li>
-                            <li>✓ Transformação de Rio Card em Bilhete Único</li>
-                            <li>✓ Declaração de renda Rio Card +</li>
-                            <li>✓ Declaração de Imposto de Renda</li>
-                            <li>✓ Geração de MEI</li>
+                            <li>✓ Fotos 3x4</li>
                         </ul>
                     </div>
                 </div>
@@ -172,42 +200,16 @@
         <section class="about-section bg-white">
             <div class="container">
                 <h3>Por Que Nos Escolher?</h3>
-
                 <div class="benefits-grid">
                     <div class="benefit-card">
                         <div class="benefit-icon">⭐</div>
                         <h4>Experiência Comprovada</h4>
-                        <p>Mais de 12 anos atendendo clientes com qualidade e dedição</p>
+                        <p>Mais de 12 anos atendendo clientes com qualidade</p>
                     </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">🎯</div>
-                        <h4>Diversidade de Serviços</h4>
-                        <p>De impressão tradicional até soluções digitais modernas</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">✅</div>
-                        <h4>Qualidade Garantida</h4>
-                        <p>Cada detalhe é importante para nós</p>
-                    </div>
-
                     <div class="benefit-card">
                         <div class="benefit-icon">🚀</div>
-                        <h4>Inovação Contínua</h4>
+                        <h4>Inovação</h4>
                         <p>Sempre atualizados com as melhores tecnologias</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">👥</div>
-                        <h4>Atendimento Personalizado</h4>
-                        <p>Cada cliente recebe atenção especial</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">💪</div>
-                        <h4>Confiabilidade</h4>
-                        <p>Referência de confiança na comunidade</p>
                     </div>
                 </div>
             </div>
@@ -226,148 +228,22 @@
                 </div>
             </div>
         </section>
-
-        <footer>
-            <div class="container">
-                <p>&copy; 2012-2026 Papel e Sonhos Informática. Todos os direitos reservados.</p>
-                <p style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">Desde 28 de setembro de 2012, qualidade e
-                    inovação ao seu serviço.</p>
-            </div>
-        </footer>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2012-2026 Papel e Sonhos Informática. Todos os direitos reservados.</p>
-            <p style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">Desde 28 de setembro de 2012, qualidade e
-                inovação ao seu serviço.</p>
+            <p style="font-size: 0.95rem; opacity: 0.9;">Desde 28 de setembro de 2012, qualidade e inovação ao seu
+                serviço.</p>
             <div class="footer-links">
                 <a href="/sobre">Sobre</a>
                 <a href="/contato">Contato</a>
+                <a href="/privacidade">Privacidade</a>
+                <a href="/termos">Termos</a>
             </div>
         </div>
     </footer>
 
-    <style>
-        .about-section {
-            padding: 60px 0;
-        }
-
-        .about-section.bg-white {
-            background-color: #f8fafc;
-        }
-
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.8;
-            color: #475569;
-        }
-
-        .about-content p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .service-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .service-card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }
-
-        .service-card h4 {
-            color: #1e293b;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .service-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .service-card li {
-            color: #64748b;
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-
-        .benefit-card {
-            text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
-
-        .benefit-card:hover {
-            border-color: #6366f1;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
-        }
-
-        .benefit-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .benefit-card h4 {
-            color: #1e293b;
-            margin-bottom: 10px;
-        }
-
-        .benefit-card p {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        footer {
-            background: #1e293b;
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        footer p {
-            margin: 5px 0;
-        }
-
-        @media (max-width: 768px) {
-
-            .services-grid,
-            .benefits-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-section {
-                padding: 40px 0;
-            }
-        }
-    </style>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
