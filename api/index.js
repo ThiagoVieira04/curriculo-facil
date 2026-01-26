@@ -37,7 +37,7 @@ app.get('/api/status', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-    res.json({ 
+    res.json({
         status: 'ok',
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'production'
@@ -114,7 +114,7 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
         } = req.body;
 
         // Validação
-        if (!nome || !cargo || !email || !telefone || !city || !experiencia || !formacao || !habilidades) {
+        if (!nome || !cargo || !email || !telefone || !cidade || !experiencia || !formacao || !habilidades) {
             return res.status(400).json({ error: 'Campos obrigatórios faltando' });
         }
 
@@ -160,7 +160,7 @@ app.post('/api/generate-cv', upload.single('photo'), async (req, res) => {
 app.get('/cv/:id', (req, res) => {
     try {
         const cv = cvDatabase.get(req.params.id);
-        
+
         if (!cv) {
             return res.status(404).send(`
                 <html>
