@@ -510,84 +510,58 @@ function showPreview(data) {
     }
 }
 
-// Download PDF com retry e melhor tratamento de erro
-async function downloadPDF(cvId, retryCount = 0) {
-    const MAX_RETRIES = 2;
-
+// Download PDF com geração no cliente (Gold Standard para Serverless)
+async function downloadPDF(cvId) {
     try {
-        const requestData = {
-            html: lastGeneratedCV ? lastGeneratedCV.html : document.getElementById('cv-preview')?.innerHTML,
-            nome: lastGeneratedCV ? lastGeneratedCV.nome : 'meu-curriculo'
+        const element = document.getElementById('cv-preview');
+        const nome = lastGeneratedCV ? lastGeneratedCV.nome : 'meu-curriculo';
+
+        if (!element) {
+            throw new Error('Prévia do currículo não encontrada.');
+        }
+
+        // Feedback visual de carregamento
+        const btn = document.querySelector('button[onclick*="downloadPDF"]');
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Preparando...';
+        btn.disabled = true;
+
+        // Nota Sênior: Pequeno delay para garantir carregamento de fontes customizadas e renderização completa
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        // Configuração de alto padrão para o PDF
+        const opt = {
+            margin: [0, 0, 0, 0], // Margens controladas pelos templates para evitar bordas brancas indesejadas
+            filename: `${nome.toLowerCase().replace(/\s+/g, '_')}_curriculo.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                letterRendering: true,
+                allowTaint: false,
+                backgroundColor: "#ffffff",
+                scrollY: 0, // CRÍTICO: Garante que o capture ignore o scroll da página
+                scrollX: 0,
+                logging: false
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        if (!requestData.html) {
-            throw new Error('Conteúdo do currículo não encontrado. Gere o currículo novamente.');
-        }
+        // Executar geração
+        await html2pdf().set(opt).from(element).save();
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minutos
+        btn.textContent = originalText;
+        btn.disabled = false;
 
-        const response = await fetch(`/api/download-pdf/${cvId || 'direct'}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/pdf, application/json'
-            },
-            body: JSON.stringify(requestData),
-            signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
-            const detailMsg = errorData.details ? ` (${errorData.details})` : '';
-            throw new Error((errorData.error || `Erro ${response.status}`) + detailMsg);
-        }
-
-        const blob = await response.blob();
-
-        if (blob.size === 0) {
-            throw new Error('PDF gerado está vazio');
-        }
-
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-
-        // Nome do arquivo
-        const contentDisposition = response.headers.get('Content-Disposition');
-        let filename = 'curriculo.pdf';
-        if (contentDisposition && contentDisposition.includes('filename=')) {
-            filename = contentDisposition.split('filename=')[1].replace(/"/g, '');
-        }
-
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-
-        // Cleanup
-        setTimeout(() => {
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }, 100);
-
-        trackEvent('pdf_downloaded', { filename });
+        trackEvent('pdf_downloaded', { filename: opt.filename });
 
     } catch (error) {
-        console.error('Erro no download:', error);
+        console.error('Erro na geração do PDF:', error);
 
-        if (error.name === 'AbortError') {
-            showError('Tempo limite excedido. O PDF pode estar sendo gerado, tente novamente.');
-        } else if (retryCount < MAX_RETRIES) {
-            console.log(`Tentativa ${retryCount + 1} de ${MAX_RETRIES + 1}`);
-            setTimeout(() => downloadPDF(cvId, retryCount + 1), 2000);
-            return;
-        } else {
-            // Se houver detalhes extras na mensagem de erro, mostra também
-            const detailedError = error.message;
-            showError(`Erro ao baixar PDF: ${detailedError}`);
-            console.error('Detalhes técnicos do erro:', detailedError);
+        // Plano de Contingência Sênior: Se o carregamento via biblioteca falhar, 
+        // usamos o fallback nativo do navegador para não deixar o usuário na mão.
+        if (confirm('Ocorreu um problema na geração automática. Deseja abrir a janela de impressão para "Salvar como PDF"?')) {
+            window.print();
         }
     }
 }
