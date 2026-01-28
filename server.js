@@ -102,10 +102,10 @@ app.get('/dicas', (req, res) => {
 // Rota para compartilhar/visualizar currículo
 app.get('/cv/:id', (req, res) => {
     const { id } = req.params;
-    
+
     // Buscar currículo no banco de dados em memória
     const cv = cvDatabase.get(id);
-    
+
     if (!cv) {
         return res.status(404).send(`
             <html>
@@ -118,7 +118,7 @@ app.get('/cv/:id', (req, res) => {
             </html>
         `);
     }
-    
+
     // Retornar página com currículo
     res.send(`
         <html>
@@ -596,9 +596,15 @@ const templates = {
                     </div>
                 ` : ''}
                 
-                <!-- Assinatura -->
-                <div style="margin-top: 30px; text-align: center; font-size: 9px; color: #aaa; opacity: 0.7;">
-                    Desenvolvido por Papel e Sonhos Informática
+                <!-- Assinatura e Rodapé -->
+                <div style="margin-top: 50px; text-align: center;">
+                    <div style="font-family: 'Georgia', serif; font-size: 18px; color: #2c3e50; margin-bottom: 5px; font-style: italic;">
+                        ${data.nome}
+                    </div>
+                    <div style="border-top: 1px solid #eee; width: 200px; margin: 0 auto 10px;"></div>
+                    <div style="font-size: 9px; color: #aaa; opacity: 0.7;">
+                        Gerado por Papel e Sonhos Informática
+                    </div>
                 </div>
             </div>
         </div>
